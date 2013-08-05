@@ -28,7 +28,7 @@ import org.jboss.arquillian.graphene.enricher.findby.ByJQuery;
 import org.jboss.arquillian.graphene.enricher.findby.FindBy;
 import org.openqa.selenium.WebElement;
 
-public class PushAppDetailsPage extends PushServerAdminUiPage {
+public class VariantsPage extends PushServerAdminUiPage {
 
     @FindBy(jquery = "table.rcue-table thead div.topcoat-button a")
     private WebElement ADD_VARIANT_BUTTON;
@@ -52,7 +52,7 @@ public class PushAppDetailsPage extends PushServerAdminUiPage {
         guardXhr(BACK_TO_PUSH_APPS_LINK).click();
     }
 
-    public void pressAddVariantButton() {
+    public void addVariant() {
         guardNoRequest(ADD_VARIANT_BUTTON).click();
     }
 
@@ -73,13 +73,13 @@ public class PushAppDetailsPage extends PushServerAdminUiPage {
     }
 
     public static enum VARIANT_LINK {
-        EDIT, REMOVE, INSTALLATIONS_PAGE
+        EDIT, REMOVE, DETAILS_PAGE
     }
 
     public void pressVariantLink(int rowNum, VARIANT_LINK link) {
         final List<WebElement> anchors = VARIANTS_LIST.get(rowNum).findElements(ByJQuery.jquerySelector("a"));
         switch (link) {
-            case INSTALLATIONS_PAGE:
+            case DETAILS_PAGE:
                 guardXhr(anchors.get(0)).click();
                 break;
             case EDIT:

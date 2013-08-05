@@ -20,6 +20,8 @@ import static org.jboss.aerogear.pushee.admin.ui.utils.WebElementUtils.clearNfil
 import static org.jboss.arquillian.graphene.Graphene.guardXhr;
 import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
+import java.io.File;
+
 import org.jboss.arquillian.graphene.enricher.findby.FindBy;
 import org.openqa.selenium.WebElement;
 
@@ -31,14 +33,23 @@ public class VariantRegistrationPage extends PushServerAdminUiPage {
     @FindBy(jquery = "div.rcue-dialog-inner form p:eq(1) textarea[name=\"description\"]")
     private WebElement VARIANT_DESC;
 
-    @FindBy(jquery = "div.rcue-dialog-inner form input[type=\"radio\"][name=\"platform\"][value=\"android\"]]")
+    @FindBy(jquery = "div.rcue-dialog-inner form section:eq(0) input[type=\"radio\"][name=\"platform\"][value=\"android\"]]")
     private WebElement RADIO_BUTTON_ANDROID;
-    
+
     @FindBy(jquery = "div.rcue-dialog-inner form section:eq(0) input[type=\"text\"]")
     private WebElement GOOGLE_API_KEY_INPUT_FIELD;
-    
+
+    @FindBy(jquery = "div.rcue-dialog-inner form section:eq(1) input[type=\"radio\"][name=\"platform\"][value=\"iOS\"]]")
+    private WebElement RADIO_BUTTON_APPLE;
+
     @FindBy(jquery = "div.rcue-dialog-inner form input[type=\"submit\"]")
     private WebElement SUBMIT_BUTTON;
+
+    @FindBy(jquery = "div.rcue-dialog-inner form section:eq(1) input[type=\"file\"]")
+    private WebElement APPLE_CERTIFICATE_INPUT_FILE;
+
+    @FindBy(jquery = "div.rcue-dialog-inner form section:eq(1) input[type=\"password\"]")
+    private WebElement APPLE_PASSPHRASE_INPUT_FIELD;
 
     public void registerAndroidVariant(String name, String desc, String googleApiKey) {
         fillVariantDetails(name, desc);
@@ -47,20 +58,37 @@ public class VariantRegistrationPage extends PushServerAdminUiPage {
         submitForm();
     }
 
+    public void registeriOSVariant(String name, String desc, String appleCertPath, String passphrase) {
+        File cert = new File(appleCertPath);
+        System.out.println("###" + cert.getAbsolutePath());
+        APPLE_CERTIFICATE_INPUT_FILE.sendKeys(cert.getAbsolutePath());
+        selectPlatform(PLATFORM.IOS);
+        fillVariantDetails(name, desc);
+        clearNfill(APPLE_PASSPHRASE_INPUT_FIELD, passphrase);
+        submitForm();
+    }
+
     private void submitForm() {
         guardXhr(SUBMIT_BUTTON).click();
     }
-    
+
     private static enum PLATFORM {
-        ANDROID
+        ANDROID, IOS
     }
-    
+
     private void selectPlatform(PLATFORM platform) {
         switch (platform) {
-            case ANDROID: RADIO_BUTTON_ANDROID.click(); break;
+            case ANDROID:
+                RADIO_BUTTON_ANDROID.click();
+                break;
+            case IOS:
+                RADIO_BUTTON_APPLE.click();
+                break;
+            default:
+                break;
         }
     }
-    
+
     private void fillVariantDetails(String name, String desc) {
         clearNfill(VARIANT_NAME, name);
         clearNfill(VARIANT_DESC, desc);

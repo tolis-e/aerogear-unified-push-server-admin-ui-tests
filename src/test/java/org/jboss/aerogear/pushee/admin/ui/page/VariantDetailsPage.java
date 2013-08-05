@@ -16,6 +16,9 @@
  */
 package org.jboss.aerogear.pushee.admin.ui.page;
 
+import static org.jboss.arquillian.graphene.Graphene.guardXhr;
+import static org.jboss.arquillian.graphene.Graphene.waitModel;
+
 import org.jboss.arquillian.graphene.enricher.findby.FindBy;
 import org.openqa.selenium.WebElement;
 
@@ -30,15 +33,30 @@ public class VariantDetailsPage extends PushServerAdminUiPage {
     @FindBy(jquery = "div.content section span.rcue-code:eq(1)")
     private WebElement SECRET;
 
+    @FindBy(id = "mobile-application-variant-table")
+    private WebElement MOBILE_INSTALLATIONS_TABLE;
+    
+    @FindBy(jquery = "div.content div a[href=\"#/mobileApps\"]")
+    private WebElement BREADCRUMB_PUSH_APPS_LINK;
+    
+    public void navigateToPushAppsPage() {
+        guardXhr(BREADCRUMB_PUSH_APPS_LINK).click();
+    }
+
     public String getHeaderTitle() {
         return HEADER_TITLE.getText();
     }
 
-    public String getvariantId() {
+    public String getVariantId() {
         return VARIANT_ID.getText();
     }
 
     public String getSecret() {
         return SECRET.getText();
+    }
+
+    @Override
+    public void waitUntilPageIsLoaded() {
+        waitModel().until().element(MOBILE_INSTALLATIONS_TABLE).is().visible();
     }
 }
