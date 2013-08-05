@@ -181,11 +181,23 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         assertEquals(ANDROID_VARIANT_DESC, variantList.get(0).getDescription());
         assertEquals(VariantType.ANDROID, variantList.get(0).getVariantType());
         assertEquals(0, variantList.get(0).getInstallations());
+        // go to push apps page
+        variantsPage.navigateToPushAppsPage();
+        // wait until page is loaded
+        pushAppsPage.waitUntilPageIsLoaded();
+        final List<PushApplication> pushAppsList = pushAppsPage.getPushAppList();
+        // The variant counter should be updated to 1
+        assertTrue(pushAppsList != null);
+        assertEquals(UPDATED_PUSH_APP_NAME, pushAppsList.get(0).getName());
+        assertEquals(UPDATED_PUSH_APP_DESC, pushAppsList.get(0).getDescription());
+        assertEquals(1, pushAppsList.get(0).getVariants());
     }
 
     @Test
     @InSequence(6)
     public void testAndroidVariantEdit() {
+        // press the variants link
+        pushAppsPage.pressLink(0, PUSH_APP_LINK.VARIANTS_PAGE);
         // wait until page is loaded
         variantsPage.waitUntilPageIsLoaded();
         // there should exist one variant

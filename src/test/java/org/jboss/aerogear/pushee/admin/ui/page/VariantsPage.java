@@ -45,6 +45,13 @@ public class VariantsPage extends PushServerAdminUiPage {
     @FindBy(jquery = "table.rcue-table tbody tr")
     private List<WebElement> VARIANTS_LIST;
 
+    @FindBy(jquery = "div.content a[href=\"#/mobileApps\"]")
+    private WebElement BACK_TO_PUSH_APPS_LINK;
+
+    public void navigateToPushAppsPage() {
+        guardXhr(BACK_TO_PUSH_APPS_LINK).click();
+    }
+
     public void pressAddVariantButton() {
         guardNoRequest(ADD_VARIANT_BUTTON).click();
     }
