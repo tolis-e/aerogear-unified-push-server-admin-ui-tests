@@ -28,7 +28,7 @@ import org.jboss.arquillian.graphene.enricher.findby.ByJQuery;
 import org.jboss.arquillian.graphene.enricher.findby.FindBy;
 import org.openqa.selenium.WebElement;
 
-public class VariantsPage extends PushServerAdminUiPage {
+public class PushAppDetailsPage extends PushServerAdminUiPage {
 
     @FindBy(jquery = "table.rcue-table thead div.topcoat-button a")
     private WebElement ADD_VARIANT_BUTTON;

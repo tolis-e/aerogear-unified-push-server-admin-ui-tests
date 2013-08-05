@@ -28,12 +28,12 @@ import org.jboss.aerogear.pushee.admin.ui.model.VariantType;
 import org.jboss.aerogear.pushee.admin.ui.page.AndroidVariantEditPage;
 import org.jboss.aerogear.pushee.admin.ui.page.LoginPage;
 import org.jboss.aerogear.pushee.admin.ui.page.PasswordChangePage;
-import org.jboss.aerogear.pushee.admin.ui.page.PushAppsEditPage;
+import org.jboss.aerogear.pushee.admin.ui.page.PushAppEditPage;
 import org.jboss.aerogear.pushee.admin.ui.page.PushAppsPage;
 import org.jboss.aerogear.pushee.admin.ui.page.PushAppsPage.PUSH_APP_LINK;
 import org.jboss.aerogear.pushee.admin.ui.page.VariantRegistrationPage;
-import org.jboss.aerogear.pushee.admin.ui.page.VariantsPage;
-import org.jboss.aerogear.pushee.admin.ui.page.VariantsPage.VARIANT_LINK;
+import org.jboss.aerogear.pushee.admin.ui.page.PushAppDetailsPage;
+import org.jboss.aerogear.pushee.admin.ui.page.PushAppDetailsPage.VARIANT_LINK;
 import org.jboss.arquillian.graphene.spi.annotations.Page;
 import org.jboss.arquillian.junit.InSequence;
 import org.junit.Test;
@@ -55,10 +55,10 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     private PushAppsPage pushAppsPage;
 
     @Page
-    private PushAppsEditPage pushAppsEditPage;
+    private PushAppEditPage pushAppEditPage;
 
     @Page
-    private VariantsPage variantsPage;
+    private PushAppDetailsPage pushAppDetailsPage;
 
     @Page
     private VariantRegistrationPage variantRegistrationPage;
@@ -91,9 +91,9 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         // register a new push application
         pushAppsPage.pressCreateButton();
         // wait until edit page is loaded
-        pushAppsEditPage.waitUntilPageIsLoaded();
+        pushAppEditPage.waitUntilPageIsLoaded();
         // register a push application
-        pushAppsEditPage.registerNewPushApp(PUSH_APP_NAME, PUSH_APP_DESC);
+        pushAppEditPage.registerNewPushApp(PUSH_APP_NAME, PUSH_APP_DESC);
         // navigate to push apps page
         pushAppsPage.waitUntilPageIsLoaded();
         final List<PushApplication> pushAppsList = pushAppsPage.getPushAppList();
@@ -115,9 +115,9 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         assertTrue("There should exist 1 push app", pushAppsPage.countPushApps() == 1);
         pushAppsPage.pressCreateButton();
         // wait until edit page is loaded
-        pushAppsEditPage.waitUntilPageIsLoaded();
+        pushAppEditPage.waitUntilPageIsLoaded();
         // register a push application
-        pushAppsEditPage.cancel();
+        pushAppEditPage.cancel();
         // wait until page is loaded
         pushAppsPage.waitUntilPageIsLoaded();
         // there should exist one push application
@@ -134,12 +134,12 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         // press the edit link
         pushAppsPage.pressLink(0, PUSH_APP_LINK.EDIT);
         // wait until edit page is loaded
-        pushAppsEditPage.waitUntilPageIsLoaded();
+        pushAppEditPage.waitUntilPageIsLoaded();
         // the push app details should be the expected ones
-        assertEquals(PUSH_APP_NAME, pushAppsEditPage.getName());
-        assertEquals(PUSH_APP_DESC, pushAppsEditPage.getDescription());
+        assertEquals(PUSH_APP_NAME, pushAppEditPage.getName());
+        assertEquals(PUSH_APP_DESC, pushAppEditPage.getDescription());
         // update the push application name
-        pushAppsEditPage.updatePushApp(UPDATED_PUSH_APP_NAME, UPDATED_PUSH_APP_DESC);
+        pushAppEditPage.updatePushApp(UPDATED_PUSH_APP_NAME, UPDATED_PUSH_APP_DESC);
         // wait until page is loaded
         pushAppsPage.waitUntilPageIsLoaded();
         final List<PushApplication> pushAppsList = pushAppsPage.getPushAppList();
@@ -160,21 +160,21 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         // press the variants link
         pushAppsPage.pressLink(0, PUSH_APP_LINK.VARIANTS_PAGE);
         // wait until page is loaded
-        variantsPage.waitUntilPageIsLoaded();
+        pushAppDetailsPage.waitUntilPageIsLoaded();
         // assert header title
-        assertTrue(variantsPage.getHeaderTitle().contains(UPDATED_PUSH_APP_NAME));
+        assertTrue(pushAppDetailsPage.getHeaderTitle().contains(UPDATED_PUSH_APP_NAME));
         // application id & master secret should exist
-        assertTrue(!isEmpty(variantsPage.getApplicationId()) && !isEmpty(variantsPage.getMasterSecret()));
+        assertTrue(!isEmpty(pushAppDetailsPage.getApplicationId()) && !isEmpty(pushAppDetailsPage.getMasterSecret()));
         // initially there are zero variants
-        assertTrue("initially there are zero variants", variantsPage.countVariants() == 0);
+        assertTrue("initially there are zero variants", pushAppDetailsPage.countVariants() == 0);
         // add a new variant
-        variantsPage.pressAddVariantButton();
+        pushAppDetailsPage.pressAddVariantButton();
         // register new android variant
         variantRegistrationPage.registerAndroidVariant(ANDROID_VARIANT_NAME, ANDROID_VARIANT_DESC, ANDROID_VARIANT_GOOGLE_KEY);
         // wait until page is loaded
-        variantsPage.waitUntilPageIsLoaded();
+        pushAppDetailsPage.waitUntilPageIsLoaded();
         // One variant should exist
-        final List<AbstractVariant> variantList = variantsPage.getVariantList();
+        final List<AbstractVariant> variantList = pushAppDetailsPage.getVariantList();
         // one variant should exist
         assertTrue(variantList != null);
         assertEquals(ANDROID_VARIANT_NAME, variantList.get(0).getName());
@@ -182,7 +182,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         assertEquals(VariantType.ANDROID, variantList.get(0).getVariantType());
         assertEquals(0, variantList.get(0).getInstallations());
         // go to push apps page
-        variantsPage.navigateToPushAppsPage();
+        pushAppDetailsPage.navigateToPushAppsPage();
         // wait until page is loaded
         pushAppsPage.waitUntilPageIsLoaded();
         final List<PushApplication> pushAppsList = pushAppsPage.getPushAppList();
@@ -199,11 +199,11 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         // press the variants link
         pushAppsPage.pressLink(0, PUSH_APP_LINK.VARIANTS_PAGE);
         // wait until page is loaded
-        variantsPage.waitUntilPageIsLoaded();
+        pushAppDetailsPage.waitUntilPageIsLoaded();
         // there should exist one variant
-        assertTrue("There should still exist 1 push app", variantsPage.countVariants() == 1);
+        assertTrue("There should still exist 1 push app", pushAppDetailsPage.countVariants() == 1);
         // press the variants edit link
-        variantsPage.pressLink(0, VARIANT_LINK.EDIT);
+        pushAppDetailsPage.pressLink(0, VARIANT_LINK.EDIT);
         // wait until page is loaded
         androidVariantEditPage.waitUntilPageIsLoaded();
         // the variant details should be the expected ones
@@ -214,15 +214,15 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         androidVariantEditPage.updateVariant(UPDATED_ANDROID_VARIANT_NAME, UPDATED_ANDROID_VARIANT_DESC,
                 UPDATED_ANDROID_VARIANT_GOOGLE_KEY);
         // wait until page is loaded
-        variantsPage.waitUntilPageIsLoaded();
+        pushAppDetailsPage.waitUntilPageIsLoaded();
         // one variant should exist
-        final List<AbstractVariant> variantList = variantsPage.getVariantList();
+        final List<AbstractVariant> variantList = pushAppDetailsPage.getVariantList();
         assertTrue(variantList != null);
         assertEquals(UPDATED_ANDROID_VARIANT_NAME, variantList.get(0).getName());
         assertEquals(UPDATED_ANDROID_VARIANT_DESC, variantList.get(0).getDescription());
         assertEquals(VariantType.ANDROID, variantList.get(0).getVariantType());
         assertEquals(0, variantList.get(0).getInstallations());
-        variantsPage.pressLink(0, VARIANT_LINK.EDIT);
+        pushAppDetailsPage.pressLink(0, VARIANT_LINK.EDIT);
         // wait until page is loaded
         androidVariantEditPage.waitUntilPageIsLoaded();
         // the variant details should be the expected ones
@@ -232,7 +232,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         // press cancel
         androidVariantEditPage.cancel();
         // wait until page is loaded
-        variantsPage.waitUntilPageIsLoaded();
+        pushAppDetailsPage.waitUntilPageIsLoaded();
     }
 
     /* -- Testing data section -- */

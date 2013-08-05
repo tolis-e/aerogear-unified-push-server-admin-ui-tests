@@ -25,7 +25,7 @@ import static org.jboss.arquillian.graphene.Graphene.waitModel;
 import org.jboss.arquillian.graphene.enricher.findby.FindBy;
 import org.openqa.selenium.WebElement;
 
-public class PushAppsEditPage extends PushServerAdminUiPage {
+public class PushAppEditPage extends PushServerAdminUiPage {
 
     @FindBy(tagName = "form")
     private WebElement FORM;
