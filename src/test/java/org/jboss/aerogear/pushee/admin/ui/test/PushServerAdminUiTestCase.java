@@ -132,7 +132,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         // there should exist one push application
         assertTrue("There should still exist 1 push app", pushAppsPage.countPushApps() == 1);
         // press the edit link
-        pushAppsPage.pressLink(0, PUSH_APP_LINK.EDIT);
+        pushAppsPage.pressPushAppLink(0, PUSH_APP_LINK.EDIT);
         // wait until edit page is loaded
         pushAppEditPage.waitUntilPageIsLoaded();
         // the push app details should be the expected ones
@@ -158,7 +158,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         // there should exist one push application
         assertTrue("There should still exist 1 push app", pushAppsPage.countPushApps() == 1);
         // press the variants link
-        pushAppsPage.pressLink(0, PUSH_APP_LINK.VARIANTS_PAGE);
+        pushAppsPage.pressPushAppLink(0, PUSH_APP_LINK.VARIANTS_PAGE);
         // wait until page is loaded
         pushAppDetailsPage.waitUntilPageIsLoaded();
         // assert header title
@@ -197,13 +197,13 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     @InSequence(6)
     public void testAndroidVariantEdit() {
         // press the variants link
-        pushAppsPage.pressLink(0, PUSH_APP_LINK.VARIANTS_PAGE);
+        pushAppsPage.pressPushAppLink(0, PUSH_APP_LINK.VARIANTS_PAGE);
         // wait until page is loaded
         pushAppDetailsPage.waitUntilPageIsLoaded();
         // there should exist one variant
         assertTrue("There should still exist 1 push app", pushAppDetailsPage.countVariants() == 1);
         // press the variants edit link
-        pushAppDetailsPage.pressLink(0, VARIANT_LINK.EDIT);
+        pushAppDetailsPage.pressVariantLink(0, VARIANT_LINK.EDIT);
         // wait until page is loaded
         androidVariantEditPage.waitUntilPageIsLoaded();
         // the variant details should be the expected ones
@@ -222,17 +222,13 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         assertEquals(UPDATED_ANDROID_VARIANT_DESC, variantList.get(0).getDescription());
         assertEquals(VariantType.ANDROID, variantList.get(0).getVariantType());
         assertEquals(0, variantList.get(0).getInstallations());
-        pushAppDetailsPage.pressLink(0, VARIANT_LINK.EDIT);
+        pushAppDetailsPage.pressVariantLink(0, VARIANT_LINK.EDIT);
         // wait until page is loaded
         androidVariantEditPage.waitUntilPageIsLoaded();
         // the variant details should be the expected ones
         assertEquals(UPDATED_ANDROID_VARIANT_NAME, androidVariantEditPage.getName());
         assertEquals(UPDATED_ANDROID_VARIANT_DESC, androidVariantEditPage.getDescription());
         assertEquals(UPDATED_ANDROID_VARIANT_GOOGLE_KEY, androidVariantEditPage.getGoogleApiKey());
-        // press cancel
-        androidVariantEditPage.cancel();
-        // wait until page is loaded
-        pushAppDetailsPage.waitUntilPageIsLoaded();
     }
 
     /* -- Testing data section -- */

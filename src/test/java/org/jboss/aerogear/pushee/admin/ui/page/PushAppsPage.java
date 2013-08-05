@@ -57,7 +57,7 @@ public class PushAppsPage extends PushServerAdminUiPage {
         EDIT, REMOVE, VARIANTS_PAGE
     }
 
-    public void pressLink(int rowNum, PUSH_APP_LINK link) {
+    public void pressPushAppLink(int rowNum, PUSH_APP_LINK link) {
         final List<WebElement> anchors = PUSH_APPLICATION_LIST.get(rowNum).findElements(ByJQuery.jquerySelector("a"));
         switch (link) {
             case VARIANTS_PAGE:

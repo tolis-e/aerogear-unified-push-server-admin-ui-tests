@@ -57,15 +57,15 @@ public class PushAppDetailsPage extends PushServerAdminUiPage {
     }
 
     public String getHeaderTitle() {
-        return HEADER_TITLE != null ? HEADER_TITLE.getText() : "";
+        return HEADER_TITLE.getText();
     }
 
     public String getApplicationId() {
-        return APPLICATION_ID != null ? APPLICATION_ID.getText() : "";
+        return APPLICATION_ID.getText();
     }
 
     public String getMasterSecret() {
-        return MASTER_SECRET != null ? MASTER_SECRET.getText() : "";
+        return MASTER_SECRET.getText();
     }
 
     public int countVariants() {
@@ -76,7 +76,7 @@ public class PushAppDetailsPage extends PushServerAdminUiPage {
         EDIT, REMOVE, INSTALLATIONS_PAGE
     }
 
-    public void pressLink(int rowNum, VARIANT_LINK link) {
+    public void pressVariantLink(int rowNum, VARIANT_LINK link) {
         final List<WebElement> anchors = VARIANTS_LIST.get(rowNum).findElements(ByJQuery.jquerySelector("a"));
         switch (link) {
             case INSTALLATIONS_PAGE:
