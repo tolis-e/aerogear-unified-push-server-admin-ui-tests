@@ -116,7 +116,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         pushAppsPage.pressCreateButton();
         // wait until edit page is loaded
         pushAppEditPage.waitUntilPageIsLoaded();
-        // register a push application
+        // press cancel
         pushAppEditPage.cancel();
         // wait until page is loaded
         pushAppsPage.waitUntilPageIsLoaded();
@@ -229,6 +229,19 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         assertEquals(UPDATED_ANDROID_VARIANT_NAME, androidVariantEditPage.getName());
         assertEquals(UPDATED_ANDROID_VARIANT_DESC, androidVariantEditPage.getDescription());
         assertEquals(UPDATED_ANDROID_VARIANT_GOOGLE_KEY, androidVariantEditPage.getGoogleApiKey());
+    }
+    
+    @Test
+    @InSequence(7)
+    public void testAndroidVariantCancellation() {
+        // wait until push apps page is loaded
+        androidVariantEditPage.waitUntilPageIsLoaded();
+        // register a push application
+        androidVariantEditPage.cancel();
+        // wait until page is loaded
+        pushAppDetailsPage.waitUntilPageIsLoaded();
+        // there should exist one variant
+        assertTrue("There should still exist 1 variant", pushAppDetailsPage.countVariants() == 1);
     }
 
     /* -- Testing data section -- */
