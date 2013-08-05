@@ -16,12 +16,24 @@
  */
 package org.jboss.aerogear.pushee.admin.ui.test;
 
+import static org.jboss.aerogear.pushee.admin.ui.utils.StringUtilities.isEmpty;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+
+import org.jboss.aerogear.pushee.admin.ui.model.AbstractVariant;
+import org.jboss.aerogear.pushee.admin.ui.model.PushApplication;
+import org.jboss.aerogear.pushee.admin.ui.model.VariantType;
+import org.jboss.aerogear.pushee.admin.ui.page.AndroidVariantEditPage;
 import org.jboss.aerogear.pushee.admin.ui.page.LoginPage;
 import org.jboss.aerogear.pushee.admin.ui.page.PasswordChangePage;
 import org.jboss.aerogear.pushee.admin.ui.page.PushAppsEditPage;
 import org.jboss.aerogear.pushee.admin.ui.page.PushAppsPage;
+import org.jboss.aerogear.pushee.admin.ui.page.PushAppsPage.PUSH_APP_LINK;
+import org.jboss.aerogear.pushee.admin.ui.page.VariantRegistrationPage;
+import org.jboss.aerogear.pushee.admin.ui.page.VariantsPage;
+import org.jboss.aerogear.pushee.admin.ui.page.VariantsPage.VARIANT_LINK;
 import org.jboss.arquillian.graphene.spi.annotations.Page;
 import org.jboss.arquillian.junit.InSequence;
 import org.junit.Test;
@@ -44,6 +56,15 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
 
     @Page
     private PushAppsEditPage pushAppsEditPage;
+
+    @Page
+    private VariantsPage variantsPage;
+
+    @Page
+    private VariantRegistrationPage variantRegistrationPage;
+
+    @Page
+    private AndroidVariantEditPage androidVariantEditPage;
 
     @Test
     @InSequence(1)
@@ -75,9 +96,116 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         pushAppsEditPage.registerNewPushApp(PUSH_APP_NAME, PUSH_APP_DESC);
         // navigate to push apps page
         pushAppsPage.waitUntilPageIsLoaded();
+        final List<PushApplication> pushAppsList = pushAppsPage.getPushAppList();
+        // there should exist one push application
+        assertTrue("There should exist 1 push app", pushAppsList != null && pushAppsList.size() == 1);
+        // The push app row should contain the right info name, desc, variants
+        assertTrue(pushAppsList != null);
+        assertEquals(PUSH_APP_NAME, pushAppsList.get(0).getName());
+        assertEquals(PUSH_APP_DESC, pushAppsList.get(0).getDescription());
+        assertEquals(0, pushAppsList.get(0).getVariants());
+    }
+
+    @Test
+    @InSequence(3)
+    public void testPushAppCancellation() {
+        // wait until push apps page is loaded
+        pushAppsPage.waitUntilPageIsLoaded();
         // there should exist one push application
         assertTrue("There should exist 1 push app", pushAppsPage.countPushApps() == 1);
+        pushAppsPage.pressCreateButton();
+        // wait until edit page is loaded
+        pushAppsEditPage.waitUntilPageIsLoaded();
+        // register a push application
+        pushAppsEditPage.cancel();
+        // wait until page is loaded
+        pushAppsPage.waitUntilPageIsLoaded();
+        // there should exist one push application
+        assertTrue("There should still exist 1 push app", pushAppsPage.countPushApps() == 1);
     }
+
+    @Test
+    @InSequence(4)
+    public void testPushAppEdit() {
+        // wait until page is loaded
+        pushAppsPage.waitUntilPageIsLoaded();
+        // there should exist one push application
+        assertTrue("There should still exist 1 push app", pushAppsPage.countPushApps() == 1);
+        // press the edit link
+        pushAppsPage.pressLink(0, PUSH_APP_LINK.EDIT);
+        // wait until edit page is loaded
+        pushAppsEditPage.waitUntilPageIsLoaded();
+        // update the push application name
+        pushAppsEditPage.updatePushApp(UPDATED_PUSH_APP_NAME, UPDATED_PUSH_APP_DESC);
+        // wait until page is loaded
+        pushAppsPage.waitUntilPageIsLoaded();
+        final List<PushApplication> pushAppsList = pushAppsPage.getPushAppList();
+        // The push app row should contain the updated info name, desc
+        assertTrue(pushAppsList != null);
+        assertEquals(UPDATED_PUSH_APP_NAME, pushAppsList.get(0).getName());
+        assertEquals(UPDATED_PUSH_APP_DESC, pushAppsList.get(0).getDescription());
+        assertEquals(0, pushAppsList.get(0).getVariants());
+    }
+
+    @Test
+    @InSequence(5)
+    public void testAndroidVariantRegistration() {
+        // wait until page is loaded
+        pushAppsPage.waitUntilPageIsLoaded();
+        // there should exist one push application
+        assertTrue("There should still exist 1 push app", pushAppsPage.countPushApps() == 1);
+        // press the variants link
+        pushAppsPage.pressLink(0, PUSH_APP_LINK.VARIANTS_PAGE);
+        // wait until page is loaded
+        variantsPage.waitUntilPageIsLoaded();
+        // assert header title
+        assertTrue(variantsPage.getHeaderTitle().contains(UPDATED_PUSH_APP_NAME));
+        // application id & master secret should exist
+        assertTrue(!isEmpty(variantsPage.getApplicationId()) && !isEmpty(variantsPage.getMasterSecret()));
+        // initially there are zero variants
+        assertTrue("initially there are zero variants", variantsPage.countVariants() == 0);
+        // add a new variant
+        variantsPage.pressAddVariantButton();
+        // register new android variant
+        variantRegistrationPage.registerAndroidVariant(ANDROID_VARIANT_NAME, ANDROID_VARIANT_DESC, ANDROID_VARIANT_GOOGLE_KEY);
+        // wait until page is loaded
+        variantsPage.waitUntilPageIsLoaded();
+        // One variant should exist
+        final List<AbstractVariant> variantList = variantsPage.getVariantList();
+        // one variant should exist
+        assertTrue(variantList != null);
+        assertEquals(ANDROID_VARIANT_NAME, variantList.get(0).getName());
+        assertEquals(ANDROID_VARIANT_DESC, variantList.get(0).getDescription());
+        assertEquals(VariantType.ANDROID, variantList.get(0).getVariantType());
+        assertEquals(0, variantList.get(0).getInstallations());
+    }
+
+    @Test
+    @InSequence(6)
+    public void testAndroidVariantEdit() {
+        // wait until page is loaded
+        variantsPage.waitUntilPageIsLoaded();
+        // there should exist one variant
+        assertTrue("There should still exist 1 push app", variantsPage.countVariants() == 1);
+        // press the variants edit link
+        variantsPage.pressLink(0, VARIANT_LINK.EDIT);
+        // wait until page is loaded
+        androidVariantEditPage.waitUntilPageIsLoaded();
+        // register new android variant
+        androidVariantEditPage.updateVariant(UPDATED_ANDROID_VARIANT_NAME, UPDATED_ANDROID_VARIANT_DESC,
+                UPDATED_ANDROID_VARIANT_GOOGLE_KEY);
+        // wait until page is loaded
+        variantsPage.waitUntilPageIsLoaded();
+        // one variant should exist
+        final List<AbstractVariant> variantList = variantsPage.getVariantList();
+        assertTrue(variantList != null);
+        assertEquals(UPDATED_ANDROID_VARIANT_NAME, variantList.get(0).getName());
+        assertEquals(UPDATED_ANDROID_VARIANT_DESC, variantList.get(0).getDescription());
+        assertEquals(VariantType.ANDROID, variantList.get(0).getVariantType());
+        assertEquals(0, variantList.get(0).getInstallations());
+    }
+
+    /* -- Testing data section -- */
 
     private static final String ADMIN_USERNAME = "admin";
 
@@ -88,4 +216,22 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     private static final String PUSH_APP_NAME = "MyApp";
 
     private static final String PUSH_APP_DESC = "Awesome app!";
+
+    private static final String UPDATED_PUSH_APP_NAME = "MyNewApp";
+
+    private static final String UPDATED_PUSH_APP_DESC = "My new awesome app!";
+
+    private static final String ANDROID_VARIANT_NAME = "MyAndroidVariant";
+
+    private static final String ANDROID_VARIANT_DESC = "My awesome variant!";
+
+    private static final String ANDROID_VARIANT_GOOGLE_KEY = "IDDASDASDSAQ";
+
+    private static final String UPDATED_ANDROID_VARIANT_NAME = "MyNewAndroidVariant";
+
+    private static final String UPDATED_ANDROID_VARIANT_DESC = "My new awesome variant!";
+
+    private static final String UPDATED_ANDROID_VARIANT_GOOGLE_KEY = "IDDASDASDSAQ__1";
+
+    /* -- Testing data section -- */
 }

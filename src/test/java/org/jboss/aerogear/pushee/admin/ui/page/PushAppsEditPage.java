@@ -16,11 +16,11 @@
  */
 package org.jboss.aerogear.pushee.admin.ui.page;
 
-import static org.jboss.arquillian.graphene.Graphene.waitModel;
-import static org.jboss.arquillian.graphene.Graphene.element;
-
+import static org.jboss.aerogear.pushee.admin.ui.utils.StringUtilities.isEmpty;
 import static org.jboss.aerogear.pushee.admin.ui.utils.WebElementUtils.clearNfill;
+import static org.jboss.arquillian.graphene.Graphene.element;
 import static org.jboss.arquillian.graphene.Graphene.guardXhr;
+import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
 import org.jboss.arquillian.graphene.enricher.findby.FindBy;
 import org.openqa.selenium.WebElement;
@@ -50,6 +50,16 @@ public class PushAppsEditPage extends PushServerAdminUiPage {
 
     public void registerNewPushApp(String name, String desc) {
         fillForm(name, desc);
+        guardXhr(SUBMIT_BUTTON).click();
+    }
+
+    public void updatePushApp(String name, String desc) {
+        if (!isEmpty(name)) {
+            clearNfill(NAME_FIELD, name);
+        }
+        if (!isEmpty(desc)) {
+            clearNfill(DESCRIPTION_FIELD, desc);
+        }
         guardXhr(SUBMIT_BUTTON).click();
     }
 

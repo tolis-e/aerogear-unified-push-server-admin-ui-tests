@@ -16,11 +16,14 @@
  */
 package org.jboss.aerogear.pushee.admin.ui.page;
 
+import static org.jboss.arquillian.graphene.Graphene.guardNoRequest;
+import static org.jboss.arquillian.graphene.Graphene.guardXhr;
 import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.aerogear.pushee.admin.ui.model.PushApplication;
 import org.jboss.arquillian.graphene.enricher.findby.ByJQuery;
 import org.jboss.arquillian.graphene.enricher.findby.FindBy;
 import org.openqa.selenium.WebElement;
@@ -45,9 +48,34 @@ public class PushAppsPage extends PushServerAdminUiPage {
     public int countPushApps() {
         return filterPushApplicationRows().size();
     }
-    
+
     public void pressCreateButton() {
-        CREATE_BUTTON.click();
+        guardNoRequest(CREATE_BUTTON).click();
+    }
+
+    public static enum PUSH_APP_LINK {
+        EDIT, REMOVE, VARIANTS_PAGE
+    }
+
+    public void pressLink(int rowNum, PUSH_APP_LINK link) {
+        final List<WebElement> anchors = PUSH_APPLICATION_LIST.get(rowNum).findElements(ByJQuery.jquerySelector("a"));
+        switch (link) {
+            case VARIANTS_PAGE:
+                guardXhr(anchors.get(0)).click();
+                break;
+            case EDIT:
+                guardNoRequest(anchors.get(1)).click();
+                break;
+            case REMOVE:
+                guardNoRequest(anchors.get(2)).click();
+                break;
+            default:
+                break;
+        }
+    }
+    
+    public void confirmPushAppDeletion() {
+        
     }
 
     private List<WebElement> filterPushApplicationRows() {
@@ -58,6 +86,21 @@ public class PushAppsPage extends PushServerAdminUiPage {
             }
         }
         return rowList;
+    }
+
+    public List<PushApplication> getPushAppList() {
+        final List<PushApplication> pushAppList = new ArrayList<PushApplication>();
+        for (WebElement row : PUSH_APPLICATION_LIST) {
+            final List<WebElement> tableDataList = row.findElements(ByJQuery.jquerySelector("td"));
+            if (tableDataList.size() == 5) {
+                final String name = tableDataList.get(0).getText();
+                final String desc = tableDataList.get(1).getText();
+                final String vars = tableDataList.get(2).getText();
+                // System.out.println("name: " + name + " desc: " + desc + " vars " + vars);
+                pushAppList.add(new PushApplication(name, desc, Integer.valueOf(vars)));
+            }
+        }
+        return pushAppList;
     }
 
     @Override
