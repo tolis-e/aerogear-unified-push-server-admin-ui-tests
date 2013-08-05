@@ -42,6 +42,9 @@ public class VariantRegistrationPage extends PushServerAdminUiPage {
     @FindBy(jquery = "div.rcue-dialog-inner form section:eq(1) input[type=\"radio\"][name=\"platform\"][value=\"iOS\"]]")
     private WebElement RADIO_BUTTON_APPLE;
 
+    @FindBy(jquery = "div.rcue-dialog-inner form section:eq(2) input[type=\"radio\"][name=\"platform\"][value=\"simplePush\"]]")
+    private WebElement RADIO_BUTTON_SIMPLE_PUSH;
+
     @FindBy(jquery = "div.rcue-dialog-inner form input[type=\"submit\"]")
     private WebElement SUBMIT_BUTTON;
 
@@ -51,29 +54,38 @@ public class VariantRegistrationPage extends PushServerAdminUiPage {
     @FindBy(jquery = "div.rcue-dialog-inner form section:eq(1) input[type=\"password\"]")
     private WebElement APPLE_PASSPHRASE_INPUT_FIELD;
 
+    @FindBy(jquery = "div.rcue-dialog-inner form section:eq(2) input[type=\"text\"]")
+    private WebElement SIMPLE_PUSH_NETWORK_URL;
+
     public void registerAndroidVariant(String name, String desc, String googleApiKey) {
         fillVariantDetails(name, desc);
         selectPlatform(PLATFORM.ANDROID);
         clearNfill(GOOGLE_API_KEY_INPUT_FIELD, googleApiKey);
-        submitForm();
+        submitFormXHR();
     }
 
     public void registeriOSVariant(String name, String desc, String appleCertPath, String passphrase) {
         File cert = new File(appleCertPath);
-        System.out.println("###" + cert.getAbsolutePath());
         APPLE_CERTIFICATE_INPUT_FILE.sendKeys(cert.getAbsolutePath());
         selectPlatform(PLATFORM.IOS);
         fillVariantDetails(name, desc);
         clearNfill(APPLE_PASSPHRASE_INPUT_FIELD, passphrase);
-        submitForm();
+        submitFormXHR();
     }
 
-    private void submitForm() {
+    public void registerSimplePushVariant(String name, String desc, String networkURL) {
+        fillVariantDetails(name, desc);
+        selectPlatform(PLATFORM.SIMPLE_PUSH);
+        clearNfill(SIMPLE_PUSH_NETWORK_URL, networkURL);
+        submitFormXHR();
+    }
+
+    private void submitFormXHR() {
         guardXhr(SUBMIT_BUTTON).click();
     }
 
     private static enum PLATFORM {
-        ANDROID, IOS
+        ANDROID, IOS, SIMPLE_PUSH
     }
 
     private void selectPlatform(PLATFORM platform) {
@@ -83,6 +95,9 @@ public class VariantRegistrationPage extends PushServerAdminUiPage {
                 break;
             case IOS:
                 RADIO_BUTTON_APPLE.click();
+                break;
+            case SIMPLE_PUSH:
+                RADIO_BUTTON_SIMPLE_PUSH.click();
                 break;
             default:
                 break;

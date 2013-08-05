@@ -31,6 +31,7 @@ import org.jboss.aerogear.pushee.admin.ui.page.PasswordChangePage;
 import org.jboss.aerogear.pushee.admin.ui.page.PushAppEditPage;
 import org.jboss.aerogear.pushee.admin.ui.page.PushAppsPage;
 import org.jboss.aerogear.pushee.admin.ui.page.PushAppsPage.PUSH_APP_LINK;
+import org.jboss.aerogear.pushee.admin.ui.page.SimplePushVariantEditPage;
 import org.jboss.aerogear.pushee.admin.ui.page.VariantDetailsPage;
 import org.jboss.aerogear.pushee.admin.ui.page.VariantRegistrationPage;
 import org.jboss.aerogear.pushee.admin.ui.page.VariantsPage;
@@ -73,6 +74,9 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
 
     @Page
     private VariantDetailsPage variantDetailsPage;
+
+    @Page
+    private SimplePushVariantEditPage simplePushVariantEditPage;
 
     @Test
     @InSequence(1)
@@ -338,6 +342,56 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         assertTrue("There should still exist 2 variants", variantsPage.countVariants() == 2);
     }
 
+    @Test
+    @InSequence(12)
+    public void testSimplePushVariantRegistration() {
+        // go to push apps page
+        variantsPage.waitUntilPageIsLoaded();
+        // assert header title
+        assertTrue(variantsPage.getHeaderTitle().contains(UPDATED_PUSH_APP_NAME));
+        // application id & master secret should exist
+        assertTrue(!isEmpty(variantsPage.getApplicationId()) && !isEmpty(variantsPage.getMasterSecret()));
+        // initially there are two variants
+        assertTrue("There should exist two variants", variantsPage.countVariants() == 2);
+        // add a new variant
+        variantsPage.addVariant();
+        // wait until page is loaded
+        variantRegistrationPage.waitUntilPageIsLoaded();
+        // register ios variant
+        variantRegistrationPage.registerSimplePushVariant(SIMPLE_PUSH_VARIANT_NAME, SIMPLE_PUSH_VARIANT_DESC,
+                SIMPLE_PUSH_VARIANT_NETWORK_URL);
+        // wait until page is loaded
+        variantsPage.waitUntilPageIsLoaded();
+        assertTrue("There should exist three variants", variantsPage.countVariants() == 3);
+    }
+
+    @Test
+    @InSequence(13)
+    public void testSimplePushVariantEdit() {
+        // go to simple push variant edit page
+        variantsPage.pressVariantLink(2, VARIANT_LINK.EDIT);
+        // wait until page is loaded
+        simplePushVariantEditPage.waitUntilPageIsLoaded();
+        // edit variant
+        simplePushVariantEditPage.updateVariant(UPDATED_SIMPLE_PUSH_VARIANT_NAME, UPDATED_SIMPLE_PUSH_VARIANT_DESC,
+                UPDATED_SIMPLE_PUSH_VARIANT_NETWORK_URL);
+        // wait until next page is loaded
+        variantsPage.waitUntilPageIsLoaded();
+        List<AbstractVariant> variantList = variantsPage.getVariantList();
+        assertTrue(variantList != null && variantList.size() == 3);
+        assertEquals(variantList.get(2).getName(), UPDATED_SIMPLE_PUSH_VARIANT_NAME);
+        assertEquals(variantList.get(2).getDescription(), UPDATED_SIMPLE_PUSH_VARIANT_DESC);
+    }
+    
+    @Test
+    @InSequence(14)
+    public void testLogout() {
+        // logout
+        variantsPage.logout();
+        // wait until login page is loaded
+        loginPage.waitUntilPageIsLoaded();
+    }
+
     /* -- Testing data section -- */
 
     private static final String ADMIN_USERNAME = "admin";
@@ -377,5 +431,18 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     private static final String UPDATED_IOS_VARIANT_NAME = "MyNewIOSVariant";
 
     private static final String UPDATED_IOS_VARIANT_DESC = "My new awesome IOS variant!";
+
+    private static final String SIMPLE_PUSH_VARIANT_NAME = "MySimplePushVariant";
+
+    private static final String SIMPLE_PUSH_VARIANT_DESC = "My awesome SimplePush variant!";
+
+    private static final String SIMPLE_PUSH_VARIANT_NETWORK_URL = "http://localhost:7777/";
+
+    private static final String UPDATED_SIMPLE_PUSH_VARIANT_NAME = "MySimplePushVariant";
+
+    private static final String UPDATED_SIMPLE_PUSH_VARIANT_DESC = "My awesome SimplePush variant!";
+
+    private static final String UPDATED_SIMPLE_PUSH_VARIANT_NETWORK_URL = "http://localhost:7777/endpoint/";
+
     /* -- Testing data section -- */
 }

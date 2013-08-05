@@ -16,25 +16,20 @@
  */
 package org.jboss.aerogear.pushee.admin.ui.page;
 
-import static org.jboss.arquillian.graphene.Graphene.waitModel;
+import static org.jboss.aerogear.pushee.admin.ui.utils.WebElementUtils.clearNfill;
 
-import org.jboss.aerogear.pushee.admin.ui.page.fragment.Header;
 import org.jboss.arquillian.graphene.enricher.findby.FindBy;
 import org.openqa.selenium.WebElement;
 
-public class PushServerAdminUiPage {
+public class SimplePushVariantEditPage extends VariantEditPage {
 
-    @FindBy(jquery = "div.right")
-    private Header HEADER;
+    @FindBy(jquery = "div.rcue-dialog-inner form section input[type=\"text\"]")
+    private WebElement SIMPLE_PUSH_NETWORK_URL;
 
-    @FindBy(className = "content")
-    private WebElement content;
-
-    public void waitUntilPageIsLoaded() {
-        waitModel().until().element(content).is().present();
-    }
-
-    public void logout() {
-        HEADER.logout();
+    @Override
+    public void updateVariant(String... input) {
+        fillVariantDetails(input[0], input[1]);
+        clearNfill(SIMPLE_PUSH_NETWORK_URL, input[2]);
+        submitForm();
     }
 }

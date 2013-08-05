@@ -14,27 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.aerogear.pushee.admin.ui.page;
+package org.jboss.aerogear.pushee.admin.ui.page.fragment;
 
-import static org.jboss.arquillian.graphene.Graphene.waitModel;
+import static org.jboss.arquillian.graphene.Graphene.guardXhr;
 
-import org.jboss.aerogear.pushee.admin.ui.page.fragment.Header;
 import org.jboss.arquillian.graphene.enricher.findby.FindBy;
 import org.openqa.selenium.WebElement;
 
-public class PushServerAdminUiPage {
+public class Header {
 
-    @FindBy(jquery = "div.right")
-    private Header HEADER;
-
-    @FindBy(className = "content")
-    private WebElement content;
-
-    public void waitUntilPageIsLoaded() {
-        waitModel().until().element(content).is().present();
-    }
+    @FindBy(jquery = "a[href=\"#\"]")
+    private WebElement LOGOUT_LINK;
 
     public void logout() {
-        HEADER.logout();
+        guardXhr(LOGOUT_LINK).click();
     }
 }
