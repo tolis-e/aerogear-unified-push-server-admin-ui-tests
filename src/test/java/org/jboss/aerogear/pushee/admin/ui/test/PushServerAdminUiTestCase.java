@@ -35,6 +35,7 @@ import org.jboss.aerogear.pushee.admin.ui.page.VariantDetailsPage;
 import org.jboss.aerogear.pushee.admin.ui.page.VariantRegistrationPage;
 import org.jboss.aerogear.pushee.admin.ui.page.VariantsPage;
 import org.jboss.aerogear.pushee.admin.ui.page.VariantsPage.VARIANT_LINK;
+import org.jboss.aerogear.pushee.admin.ui.page.iOSVariantEditPage;
 import org.jboss.arquillian.graphene.spi.annotations.Page;
 import org.jboss.arquillian.junit.InSequence;
 import org.junit.Test;
@@ -66,6 +67,9 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
 
     @Page
     private AndroidVariantEditPage androidVariantEditPage;
+
+    @Page
+    private iOSVariantEditPage iOSVariantEditPage;
 
     @Page
     private VariantDetailsPage variantDetailsPage;
@@ -301,6 +305,39 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         assertTrue("There should exist two variants", variantsPage.countVariants() == 2);
     }
 
+    @Test
+    @InSequence(10)
+    public void testiOSVariantEdit() {
+        // go to ios variant edit page
+        variantsPage.pressVariantLink(1, VARIANT_LINK.EDIT);
+        // wait until page is loaded
+        iOSVariantEditPage.waitUntilPageIsLoaded();
+        // edit variant
+        iOSVariantEditPage
+                .updateVariant(UPDATED_IOS_VARIANT_NAME, UPDATED_IOS_VARIANT_DESC, IOS_CERT_PATH, IOS_CERT_PASSPHRASE);
+        // wait until next page is loaded
+        variantsPage.waitUntilPageIsLoaded();
+        List<AbstractVariant> variantList = variantsPage.getVariantList();
+        assertTrue(variantList != null && variantList.size() == 2);
+        assertEquals(variantList.get(1).getName(), UPDATED_IOS_VARIANT_NAME);
+        assertEquals(variantList.get(1).getDescription(), UPDATED_IOS_VARIANT_DESC);
+    }
+
+    @Test
+    @InSequence(11)
+    public void testiOSVariantCancellation() {
+        // wait until push apps page is loaded
+        variantsPage.pressVariantLink(1, VARIANT_LINK.EDIT);
+        // wait until page is loaded
+        iOSVariantEditPage.waitUntilPageIsLoaded();
+        // register a push application
+        iOSVariantEditPage.cancel();
+        // wait until page is loaded
+        variantsPage.waitUntilPageIsLoaded();
+        // there should exist one variant
+        assertTrue("There should still exist 2 variants", variantsPage.countVariants() == 2);
+    }
+
     /* -- Testing data section -- */
 
     private static final String ADMIN_USERNAME = "admin";
@@ -337,5 +374,8 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
 
     private static final String IOS_CERT_PATH = "src/test/resources/certs/qaAerogear.p12";
 
+    private static final String UPDATED_IOS_VARIANT_NAME = "MyNewIOSVariant";
+
+    private static final String UPDATED_IOS_VARIANT_DESC = "My new awesome IOS variant!";
     /* -- Testing data section -- */
 }

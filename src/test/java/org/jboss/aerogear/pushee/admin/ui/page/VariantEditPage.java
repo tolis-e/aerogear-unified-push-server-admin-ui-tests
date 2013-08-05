@@ -18,6 +18,7 @@ package org.jboss.aerogear.pushee.admin.ui.page;
 
 import static org.jboss.aerogear.pushee.admin.ui.utils.WebElementUtils.clearNfill;
 import static org.jboss.arquillian.graphene.Graphene.guardXhr;
+import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
 import org.jboss.arquillian.graphene.enricher.findby.FindBy;
 import org.openqa.selenium.WebElement;
@@ -55,6 +56,11 @@ public abstract class VariantEditPage extends PushServerAdminUiPage {
     
     public void cancel() {
         guardXhr(CANCEL_BUTTON).click();
+    }
+    
+    @Override
+    public void waitUntilPageIsLoaded() {
+        waitModel().until().element(SUBMIT_BUTTON).is().visible();
     }
     
     protected abstract void updateVariant(String... input);
