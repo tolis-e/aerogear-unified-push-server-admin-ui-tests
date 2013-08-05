@@ -26,6 +26,10 @@ public class AndroidVariantEditPage extends VariantEditPage {
     @FindBy(jquery = "div.rcue-dialog-inner form section:eq(0) input[type=\"text\"]")
     private WebElement GOOGLE_API_KEY_INPUT_FIELD;
 
+    public String getGoogleApiKey() {
+        return GOOGLE_API_KEY_INPUT_FIELD.getAttribute("value");
+    }
+
     /**
      * Input: name, desc, google api key
      */

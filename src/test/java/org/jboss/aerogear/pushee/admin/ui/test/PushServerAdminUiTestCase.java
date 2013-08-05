@@ -135,6 +135,9 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         pushAppsPage.pressLink(0, PUSH_APP_LINK.EDIT);
         // wait until edit page is loaded
         pushAppsEditPage.waitUntilPageIsLoaded();
+        // the push app details should be the expected ones
+        assertEquals(PUSH_APP_NAME, pushAppsEditPage.getName());
+        assertEquals(PUSH_APP_DESC, pushAppsEditPage.getDescription());
         // update the push application name
         pushAppsEditPage.updatePushApp(UPDATED_PUSH_APP_NAME, UPDATED_PUSH_APP_DESC);
         // wait until page is loaded
@@ -191,6 +194,10 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         variantsPage.pressLink(0, VARIANT_LINK.EDIT);
         // wait until page is loaded
         androidVariantEditPage.waitUntilPageIsLoaded();
+        // the variant details should be the expected ones
+        assertEquals(ANDROID_VARIANT_NAME, androidVariantEditPage.getName());
+        assertEquals(ANDROID_VARIANT_DESC, androidVariantEditPage.getDescription());
+        assertEquals(ANDROID_VARIANT_GOOGLE_KEY, androidVariantEditPage.getGoogleApiKey());
         // register new android variant
         androidVariantEditPage.updateVariant(UPDATED_ANDROID_VARIANT_NAME, UPDATED_ANDROID_VARIANT_DESC,
                 UPDATED_ANDROID_VARIANT_GOOGLE_KEY);
@@ -203,6 +210,17 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         assertEquals(UPDATED_ANDROID_VARIANT_DESC, variantList.get(0).getDescription());
         assertEquals(VariantType.ANDROID, variantList.get(0).getVariantType());
         assertEquals(0, variantList.get(0).getInstallations());
+        variantsPage.pressLink(0, VARIANT_LINK.EDIT);
+        // wait until page is loaded
+        androidVariantEditPage.waitUntilPageIsLoaded();
+        // the variant details should be the expected ones
+        assertEquals(UPDATED_ANDROID_VARIANT_NAME, androidVariantEditPage.getName());
+        assertEquals(UPDATED_ANDROID_VARIANT_DESC, androidVariantEditPage.getDescription());
+        assertEquals(UPDATED_ANDROID_VARIANT_GOOGLE_KEY, androidVariantEditPage.getGoogleApiKey());
+        // press cancel
+        androidVariantEditPage.cancel();
+        // wait until page is loaded
+        variantsPage.waitUntilPageIsLoaded();
     }
 
     /* -- Testing data section -- */

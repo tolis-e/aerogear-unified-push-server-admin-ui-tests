@@ -48,6 +48,14 @@ public class PushAppsEditPage extends PushServerAdminUiPage {
         return PAGE_URL;
     }
 
+    public String getName() {
+        return NAME_FIELD.getAttribute("value");
+    }
+
+    public String getDescription() {
+        return DESCRIPTION_FIELD.getAttribute("value");
+    }
+
     public void registerNewPushApp(String name, String desc) {
         fillForm(name, desc);
         guardXhr(SUBMIT_BUTTON).click();

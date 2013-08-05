@@ -41,8 +41,20 @@ public abstract class VariantEditPage extends PushServerAdminUiPage {
         clearNfill(VARIANT_DESC, desc);
     }
     
+    public String getName() {
+        return VARIANT_NAME.getAttribute("value");
+    }
+
+    public String getDescription() {
+        return VARIANT_DESC.getAttribute("value");
+    }
+    
     public void submitForm() {
         guardXhr(SUBMIT_BUTTON).click();
+    }
+    
+    public void cancel() {
+        guardXhr(CANCEL_BUTTON).click();
     }
     
     protected abstract void updateVariant(String... input);
