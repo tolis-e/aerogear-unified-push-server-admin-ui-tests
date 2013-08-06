@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.aerogear.pushee.admin.ui.model.Installation;
+import org.jboss.arquillian.graphene.enricher.findby.ByJQuery;
 import org.jboss.arquillian.graphene.enricher.findby.FindBy;
-import org.openqa.selenium.By.ByTagName;
 import org.openqa.selenium.WebElement;
 
 public class VariantDetailsPage extends PushServerAdminUiPage {
@@ -66,7 +66,7 @@ public class VariantDetailsPage extends PushServerAdminUiPage {
     public List<Installation> getInstallationList() {
         final List<Installation> installationList = new ArrayList<Installation>();
         for (WebElement row : MOBILE_INSTALLATION_ROWS) {
-            final List<WebElement> tableDataList = row.findElements(ByTagName.tagName("td"));
+            final List<WebElement> tableDataList = row.findElements(ByJQuery.jquerySelector("td"));
             if (tableDataList.size() == 4) {
                 final String token = tableDataList.get(0).getText();
                 final String device = tableDataList.get(1).getText();
