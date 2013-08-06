@@ -73,9 +73,9 @@ public class PushAppsPage extends PushServerAdminUiPage {
                 break;
         }
     }
-    
+
     public void confirmPushAppDeletion() {
-        
+
     }
 
     private List<WebElement> filterPushApplicationRows() {
@@ -101,6 +101,18 @@ public class PushAppsPage extends PushServerAdminUiPage {
             }
         }
         return pushAppList;
+    }
+
+    public int findPushAppRow(String name) {
+        final List<PushApplication> pushAppList = getPushAppList();
+        if (name != null && pushAppList != null && !pushAppList.isEmpty()) {
+            for (int i = 0; i < pushAppList.size(); i++) {
+                if (name.equals(pushAppList.get(i).getName())) {
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 
     @Override

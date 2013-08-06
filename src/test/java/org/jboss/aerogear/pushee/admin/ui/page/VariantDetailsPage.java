@@ -19,6 +19,11 @@ package org.jboss.aerogear.pushee.admin.ui.page;
 import static org.jboss.arquillian.graphene.Graphene.guardXhr;
 import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.jboss.aerogear.pushee.admin.ui.model.Installation;
+import org.jboss.arquillian.graphene.enricher.findby.ByJQuery;
 import org.jboss.arquillian.graphene.enricher.findby.FindBy;
 import org.openqa.selenium.WebElement;
 
@@ -34,11 +39,14 @@ public class VariantDetailsPage extends PushServerAdminUiPage {
     private WebElement SECRET;
 
     @FindBy(id = "mobile-application-variant-table")
-    private WebElement MOBILE_INSTALLATIONS_TABLE;
-    
+    private WebElement MOBILE_INSTALLATIONS_TABLE_CONTAINER;
+
+    @FindBy(jquery = "#mobile-application-variant-table table tr")
+    private List<WebElement> MOBILE_INSTALLATION_ROWS;
+
     @FindBy(jquery = "div.content div a[href=\"#/mobileApps\"]")
     private WebElement BREADCRUMB_PUSH_APPS_LINK;
-    
+
     public void navigateToPushAppsPage() {
         guardXhr(BREADCRUMB_PUSH_APPS_LINK).click();
     }
@@ -55,8 +63,33 @@ public class VariantDetailsPage extends PushServerAdminUiPage {
         return SECRET.getText();
     }
 
+    public List<Installation> getInstallationList() {
+        final List<Installation> installationList = new ArrayList<Installation>();
+        for (WebElement row : MOBILE_INSTALLATION_ROWS) {
+            final List<WebElement> tableDataList = row.findElements(ByJQuery.jquerySelector("td"));
+            if (tableDataList.size() == 4) {
+                final String token = tableDataList.get(0).getText();
+                final String device = tableDataList.get(1).getText();
+                // final String platform = tableDataList.get(2).getText();
+                installationList.add(new Installation(token, device, null, null));
+            }
+        }
+        return installationList;
+    }
+
+    public boolean tokenIdExistsInList(String tokenId, List<Installation> list) {
+        if (tokenId != null && list != null && !list.isEmpty()) {
+            for (Installation installation : list) {
+                if (tokenId.equals(installation.getDeviceToken())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     @Override
     public void waitUntilPageIsLoaded() {
-        waitModel().until().element(MOBILE_INSTALLATIONS_TABLE).is().visible();
+        waitModel().until().element(MOBILE_INSTALLATIONS_TABLE_CONTAINER).is().visible();
     }
 }

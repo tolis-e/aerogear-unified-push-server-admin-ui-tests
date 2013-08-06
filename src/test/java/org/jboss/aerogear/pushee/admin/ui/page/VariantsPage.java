@@ -109,7 +109,7 @@ public class VariantsPage extends PushServerAdminUiPage {
         return variantList;
     }
 
-    public int findVariantRowByName(String name) {
+    public int findVariantRow(String name) {
         final List<AbstractVariant> variantList = getVariantList();
         if (name != null && variantList != null && !variantList.isEmpty()) {
             for (int i=0; i<variantList.size(); i++) {
