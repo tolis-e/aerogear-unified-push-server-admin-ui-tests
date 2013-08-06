@@ -74,10 +74,6 @@ public class PushAppsPage extends PushServerAdminUiPage {
         }
     }
 
-    public void confirmPushAppDeletion() {
-
-    }
-
     private List<WebElement> filterPushApplicationRows() {
         final List<WebElement> rowList = new ArrayList<WebElement>();
         for (WebElement row : PUSH_APPLICATION_LIST) {
