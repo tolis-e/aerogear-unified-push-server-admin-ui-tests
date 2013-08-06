@@ -26,6 +26,7 @@ import java.util.List;
 import org.jboss.aerogear.pushee.admin.ui.model.AbstractVariant;
 import org.jboss.arquillian.graphene.enricher.findby.ByJQuery;
 import org.jboss.arquillian.graphene.enricher.findby.FindBy;
+import org.openqa.selenium.By.ByTagName;
 import org.openqa.selenium.WebElement;
 
 public class VariantsPage extends PushServerAdminUiPage {
@@ -77,7 +78,7 @@ public class VariantsPage extends PushServerAdminUiPage {
     }
 
     public void pressVariantLink(int rowNum, VARIANT_LINK link) {
-        final List<WebElement> anchors = VARIANTS_LIST.get(rowNum).findElements(ByJQuery.jquerySelector("a"));
+        final List<WebElement> anchors = VARIANTS_LIST.get(rowNum).findElements(ByTagName.tagName("a"));
         switch (link) {
             case DETAILS_PAGE:
                 guardXhr(anchors.get(0)).click();
@@ -96,7 +97,7 @@ public class VariantsPage extends PushServerAdminUiPage {
     public List<AbstractVariant> getVariantList() {
         final List<AbstractVariant> variantList = new ArrayList<AbstractVariant>();
         for (WebElement row : VARIANTS_LIST) {
-            final List<WebElement> tableDataList = row.findElements(ByJQuery.jquerySelector("td"));
+            final List<WebElement> tableDataList = row.findElements(ByTagName.tagName("td"));
             if (tableDataList.size() == 6) {
                 final String name = tableDataList.get(0).getText();
                 final String desc = tableDataList.get(1).getText();
@@ -112,7 +113,7 @@ public class VariantsPage extends PushServerAdminUiPage {
     public int findVariantRow(String name) {
         final List<AbstractVariant> variantList = getVariantList();
         if (name != null && variantList != null && !variantList.isEmpty()) {
-            for (int i=0; i<variantList.size(); i++) {
+            for (int i = 0; i < variantList.size(); i++) {
                 if (name.equals(variantList.get(i).getName())) {
                     return i;
                 }
