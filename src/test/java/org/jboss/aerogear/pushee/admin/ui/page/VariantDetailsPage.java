@@ -44,11 +44,18 @@ public class VariantDetailsPage extends PushServerAdminUiPage {
     @FindBy(jquery = "#mobile-application-variant-table table tr")
     private List<WebElement> MOBILE_INSTALLATION_ROWS;
 
-    @FindBy(jquery = "div.content div a[href=\"#/mobileApps\"]")
+    @FindBy(jquery = "div.content div:eq(1) a:eq(0)")
     private WebElement BREADCRUMB_PUSH_APPS_LINK;
+    
+    @FindBy(jquery = "div.content div:eq(1) a:eq(1)")
+    private WebElement BREADCRUMB_VARIANTS_LINK;
 
     public void navigateToPushAppsPage() {
         guardXhr(BREADCRUMB_PUSH_APPS_LINK).click();
+    }
+    
+    public void navigateToVariantsPage() {
+        guardXhr(BREADCRUMB_VARIANTS_LINK).click();
     }
 
     public String getHeaderTitle() {
