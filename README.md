@@ -10,7 +10,7 @@ The Functional Test defines the three core aspects needed for the execution of a
 - deployment — the process of dispatching an artifact to a container
 - archive — a packaged assembly of code, configuration and resources
 
-The container's configuration resides in the [Arquillian XML](https://github.com/tolis-e/aerogear-unified-push-server-admin-ui-tests/blob/master/src/test/resources/arquillian.xml) configuration file while the deployment and the archive are defined in the [Deployments](https://github.com/tolis-e/aerogear-unified-push-server-admin-ui-tests/blob/master/src/test/java/org/jboss/aerogear/controller/demo/test/Deployments.java) file.
+The container's configuration resides in the [Arquillian XML](https://github.com/tolis-e/aerogear-unified-push-server-admin-ui-tests/blob/master/src/test/resources/arquillian.xml) configuration file while the deployment and the archive are defined in the [Deployments](https://github.com/tolis-e/aerogear-unified-push-server-admin-ui-tests/blob/master/src/test/java/org/jboss/aerogear/pushee/admin/ui/test/Deployments.java) file.
 
 The test case is dispatched to the container's environment through coordination with ShrinkWrap, which is used to declaratively define a custom Java EE archive that encapsulates the test class and its dependent resources. Arquillian packages the ShrinkWrap defined archive at runtime and deploys it to the target container. It then negotiates the execution of the test methods and captures the test results using remote communication with the server. Finally, Arquillian undeploys the test archive.
 
