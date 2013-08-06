@@ -1,4 +1,4 @@
-# AeroGear Unified Push Server Admin UI Tests
+# AeroGear Unified Push Server Admin UI Tests [![Build Status](https://travis-ci.org/tolis-e/aerogear-unified-push-server-admin-ui-tests.png?branch=master)](https://travis-ci.org/tolis-e/aerogear-unified-push-server-admin-ui-tests)
 This project contains the functional and acceptance tests for the [aerogear-unified-push-server-admin-ui](https://github.com/aerogear/aerogear-unified-push-server-admin-ui) project.
 
 The [Arquillian](http://arquillian.org/) testing platform is used to enable the testing automation. Arquillian integrates transparently with the testing framework which is JUnit in this case.
