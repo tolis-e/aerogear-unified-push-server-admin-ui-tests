@@ -531,10 +531,67 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         // the installations should have the right token ids
         assertTrue(variantDetailsPage.tokenIdExistsInList(ANDROID_INSTALLATION_TOKEN_ID, installationList)
                 && variantDetailsPage.tokenIdExistsInList(ANDROID_INSTALLATION_TOKEN_ID_2, installationList));
+        variantDetailsPage.navigateToPushAppsPage();
+    }
+    
+    @Test
+    @InSequence(18)
+    public void registeriOSInstallations() {
+        // wait until page ia loaded
+        pushAppsPage.waitUntilPageIsLoaded();
+        pushAppsPage.pressPushAppLink(0, PUSH_APP_LINK.VARIANTS_PAGE);
+        // wait until page is loaded
+        variantsPage.waitUntilPageIsLoaded();
+        // assert header title
+        assertTrue(variantsPage.getHeaderTitle().contains(UPDATED_PUSH_APP_NAME));
+        // application id & master secret should exist
+        final String pushAppId = variantsPage.getApplicationId();
+        final String masterSecret = variantsPage.getMasterSecret();
+        assertTrue(!isEmpty(pushAppId) && !isEmpty(masterSecret));
+
+        int variantPositionInList = variantsPage.findVariantRow(UPDATED_IOS_VARIANT_NAME);
+        assertTrue(variantPositionInList != -1);
+        // click on a variant
+        variantsPage.pressVariantLink(variantPositionInList, VARIANT_LINK.DETAILS_PAGE);
+        // wait until page is loaded
+        variantDetailsPage.waitUntilPageIsLoaded();
+        // title should contain the variant name
+        assertTrue(variantDetailsPage.getHeaderTitle().contains(UPDATED_IOS_VARIANT_NAME));
+        // variant id and secre should exist
+        final String variantId = variantDetailsPage.getVariantId();
+        final String secret = variantDetailsPage.getSecret();
+        assertTrue(!isEmpty(variantId) && !isEmpty(secret));
+        // register installation
+        Installation iosInstallation = new Installation(IOS_INSTALLATION_TOKEN_ID, IOS_INSTALLATION_DEVICE_TYPE,
+                IOS_INSTALLATION_OS, IOS_INSTALLATION_ALIAS);
+        InstallationUtils.registerInstallation(contextRoot.toExternalForm(), variantId, secret, iosInstallation);
+        // register second installation
+        Installation secondiOSInstallation = new Installation(IOS_INSTALLATION_TOKEN_ID_2,
+                IOS_INSTALLATION_DEVICE_TYPE, IOS_INSTALLATION_OS, IOS_INSTALLATION_ALIAS);
+        InstallationUtils.registerInstallation(contextRoot.toExternalForm(), variantId, secret, secondiOSInstallation);
+        // go back to push app page
+        variantDetailsPage.navigateToPushAppsPage();
+        // select the push app
+        pushAppsPage.pressPushAppLink(0, PUSH_APP_LINK.VARIANTS_PAGE);
+        // wait until page is loaded
+        variantsPage.waitUntilPageIsLoaded();
+        // fins the android variant
+        variantPositionInList = variantsPage.findVariantRow(UPDATED_IOS_VARIANT_NAME);
+        assertTrue(variantPositionInList != -1);
+        // click on a variant
+        variantsPage.pressVariantLink(variantPositionInList, VARIANT_LINK.DETAILS_PAGE);
+        // wait until page is loaded
+        variantDetailsPage.waitUntilPageIsLoaded();
+        // two installations should exist
+        final List<Installation> installationList = variantDetailsPage.getInstallationList();
+        assertTrue(installationList != null && installationList.size() == 2);
+        // the installations should have the right token ids
+        assertTrue(variantDetailsPage.tokenIdExistsInList(IOS_INSTALLATION_TOKEN_ID, installationList)
+                && variantDetailsPage.tokenIdExistsInList(IOS_INSTALLATION_TOKEN_ID_2, installationList));
     }
 
     @Test
-    @InSequence(18)
+    @InSequence(19)
     public void testLogout() {
         // logout
         variantsPage.logout();
@@ -605,5 +662,15 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     private static final String ANDROID_INSTALLATION_OS = "ANDROID";
 
     private static final String ANDROID_INSTALLATION_ALIAS = "qa@example.com";
+    
+    private static final String IOS_INSTALLATION_TOKEN_ID = "abcd123456";
+
+    private static final String IOS_INSTALLATION_TOKEN_ID_2 = "abcd123321";
+
+    private static final String IOS_INSTALLATION_DEVICE_TYPE = "Phone";
+
+    private static final String IOS_INSTALLATION_OS = "IOS";
+
+    private static final String IOS_INSTALLATION_ALIAS = "qa@example.com";
     /* -- Testing data section -- */
 }
