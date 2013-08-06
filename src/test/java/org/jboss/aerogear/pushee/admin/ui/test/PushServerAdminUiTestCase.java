@@ -645,10 +645,31 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         // the installations should have the right token ids
         assertTrue(variantDetailsPage.tokenIdExistsInList(SIMPLE_PUSH_INSTALLATION_TOKEN_ID, installationList)
                 && variantDetailsPage.tokenIdExistsInList(SIMPLE_PUSH_INSTALLATION_TOKEN_ID_2, installationList));
+        variantDetailsPage.navigateToPushAppsPage();
     }
 
     @Test
     @InSequence(20)
+    public void testSecondPushAppRegistration() {
+        // wait until push apps page is loaded
+        pushAppsPage.waitUntilPageIsLoaded();
+        // initially there shouldn't exist any push applications
+        assertTrue("Initially there is 1 push app", pushAppsPage.countPushApps() == 1);
+        // register a new push application
+        pushAppsPage.pressCreateButton();
+        // wait until edit page is loaded
+        pushAppEditPage.waitUntilPageIsLoaded();
+        // register a push application
+        pushAppEditPage.registerNewPushApp(SECOND_PUSH_APP_NAME, PUSH_APP_DESC);
+        // navigate to push apps page
+        pushAppsPage.waitUntilPageIsLoaded();
+        final List<PushApplication> pushAppsList = pushAppsPage.getPushAppList();
+        // there should exist one push application
+        assertTrue("There should exist 2 push apps", pushAppsList != null && pushAppsList.size() == 2);
+    }
+    
+    @Test
+    @InSequence(21)
     public void testLogout() {
         // logout
         variantsPage.logout();
@@ -665,6 +686,8 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     private static final String NEW_ADMIN_PASSWORD = "aerogear";
 
     private static final String PUSH_APP_NAME = "MyApp";
+    
+    private static final String SECOND_PUSH_APP_NAME = "MyNewApp";
 
     private static final String PUSH_APP_DESC = "Awesome app!";
 
