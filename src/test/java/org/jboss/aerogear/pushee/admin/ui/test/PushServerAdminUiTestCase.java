@@ -170,7 +170,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         // there should exist one push application
         assertTrue("There should still exist 1 push app", pushAppsPage.countPushApps() == 1);
         // press the variants link
-        pushAppsPage.pressPushAppLink(0, PUSH_APP_LINK.DETAILS_PAGE);
+        pushAppsPage.pressPushAppLink(0, PUSH_APP_LINK.VARIANTS_PAGE);
         // wait until page is loaded
         variantsPage.waitUntilPageIsLoaded();
         // assert header title
@@ -189,10 +189,12 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         final List<AbstractVariant> variantList = variantsPage.getVariantList();
         // one variant should exist
         assertTrue(variantList != null);
-        assertEquals(ANDROID_VARIANT_NAME, variantList.get(0).getName());
-        assertEquals(ANDROID_VARIANT_DESC, variantList.get(0).getDescription());
-        assertEquals(VariantType.ANDROID, variantList.get(0).getVariantType());
-        assertEquals(0, variantList.get(0).getInstallations());
+        final int variantPositionInList = variantsPage.findVariantRowByName(ANDROID_VARIANT_NAME);
+        assertTrue(variantPositionInList != -1);
+        assertEquals(ANDROID_VARIANT_NAME, variantList.get(variantPositionInList).getName());
+        assertEquals(ANDROID_VARIANT_DESC, variantList.get(variantPositionInList).getDescription());
+        assertEquals(VariantType.ANDROID, variantList.get(variantPositionInList).getVariantType());
+        assertEquals(0, variantList.get(variantPositionInList).getInstallations());
         // go to push apps page
         variantsPage.navigateToPushAppsPage();
         // wait until page is loaded
@@ -209,13 +211,13 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     @InSequence(6)
     public void testAndroidVariantDetailsPage() {
         // press the variants link
-        pushAppsPage.pressPushAppLink(0, PUSH_APP_LINK.DETAILS_PAGE);
+        pushAppsPage.pressPushAppLink(0, PUSH_APP_LINK.VARIANTS_PAGE);
         // wait until page is loaded
         variantsPage.waitUntilPageIsLoaded();
-        // wait until push apps page is loaded
-        variantsPage.waitUntilPageIsLoaded();
+        final int variantPositionInList = variantsPage.findVariantRowByName(ANDROID_VARIANT_NAME);
+        assertTrue(variantPositionInList != -1);
         // click on a variant
-        variantsPage.pressVariantLink(0, VARIANT_LINK.DETAILS_PAGE);
+        variantsPage.pressVariantLink(variantPositionInList, VARIANT_LINK.DETAILS_PAGE);
         // wait until page is loaded
         variantDetailsPage.waitUntilPageIsLoaded();
         // title should contain the variant name
@@ -232,7 +234,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     @InSequence(7)
     public void testAndroidVariantEdit() {
         // press the variants link
-        pushAppsPage.pressPushAppLink(0, PUSH_APP_LINK.DETAILS_PAGE);
+        pushAppsPage.pressPushAppLink(0, PUSH_APP_LINK.VARIANTS_PAGE);
         // wait until page is loaded
         variantsPage.waitUntilPageIsLoaded();
         // there should exist one variant
@@ -289,7 +291,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         // there should exist one push application
         assertTrue("There should still exist 1 push app", pushAppsPage.countPushApps() == 1);
         // press the variants link
-        pushAppsPage.pressPushAppLink(0, PUSH_APP_LINK.DETAILS_PAGE);
+        pushAppsPage.pressPushAppLink(0, PUSH_APP_LINK.VARIANTS_PAGE);
         // wait until page is loaded
         variantsPage.waitUntilPageIsLoaded();
         // assert header title
@@ -303,7 +305,8 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         // wait until page is loaded
         variantRegistrationPage.waitUntilPageIsLoaded();
         // register ios variant
-        variantRegistrationPage.registeriOSVariant(IOS_VARIANT_NAME, IOS_VARIANT_DESC, IOS_CERT_PATH, IOS_CERT_PASSPHRASE);
+        variantRegistrationPage.registeriOSVariant(IOS_VARIANT_NAME, IOS_VARIANT_DESC, IOS_CERT_PATH, IOS_CERT_PASSPHRASE,
+                false);
         // wait until page is loaded
         variantsPage.waitUntilPageIsLoaded();
         assertTrue("There should exist two variants", variantsPage.countVariants() == 2);
@@ -311,9 +314,34 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
 
     @Test
     @InSequence(10)
+    public void testiOSVariantDetailsPage() {
+        // wait until page is loaded
+        variantsPage.waitUntilPageIsLoaded();
+        final int variantPositionInList = variantsPage.findVariantRowByName(IOS_VARIANT_NAME);
+        assertTrue(variantPositionInList != -1);
+        // click on a variant
+        variantsPage.pressVariantLink(variantPositionInList, VARIANT_LINK.DETAILS_PAGE);
+        // wait until page is loaded
+        variantDetailsPage.waitUntilPageIsLoaded();
+        // title should contain the variant name
+        assertTrue(variantDetailsPage.getHeaderTitle().contains(IOS_VARIANT_NAME));
+        // variant id and secre should exist
+        assertTrue(!isEmpty(variantDetailsPage.getSecret()) && !isEmpty(variantDetailsPage.getVariantId()));
+        // got to push applications page
+        variantDetailsPage.navigateToPushAppsPage();
+        // wait until page is loaded
+        pushAppsPage.waitUntilPageIsLoaded();
+    }
+
+    @Test
+    @InSequence(11)
     public void testiOSVariantEdit() {
+        // press the variants link
+        pushAppsPage.pressPushAppLink(0, PUSH_APP_LINK.VARIANTS_PAGE);
+        final int variantPositionInList = variantsPage.findVariantRowByName(IOS_VARIANT_NAME);
+        assertTrue(variantPositionInList != -1);
         // go to ios variant edit page
-        variantsPage.pressVariantLink(1, VARIANT_LINK.EDIT);
+        variantsPage.pressVariantLink(variantPositionInList, VARIANT_LINK.EDIT);
         // wait until page is loaded
         iOSVariantEditPage.waitUntilPageIsLoaded();
         // edit variant
@@ -328,10 +356,12 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     }
 
     @Test
-    @InSequence(11)
+    @InSequence(12)
     public void testiOSVariantCancellation() {
+        final int variantPositionInList = variantsPage.findVariantRowByName(UPDATED_IOS_VARIANT_NAME);
+        assertTrue(variantPositionInList != -1);
         // wait until push apps page is loaded
-        variantsPage.pressVariantLink(1, VARIANT_LINK.EDIT);
+        variantsPage.pressVariantLink(variantPositionInList, VARIANT_LINK.EDIT);
         // wait until page is loaded
         iOSVariantEditPage.waitUntilPageIsLoaded();
         // register a push application
@@ -343,7 +373,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     }
 
     @Test
-    @InSequence(12)
+    @InSequence(13)
     public void testSimplePushVariantRegistration() {
         // go to push apps page
         variantsPage.waitUntilPageIsLoaded();
@@ -366,10 +396,12 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     }
 
     @Test
-    @InSequence(13)
+    @InSequence(14)
     public void testSimplePushVariantEdit() {
+        int variantPositionInList = variantsPage.findVariantRowByName(SIMPLE_PUSH_VARIANT_NAME);
+        assertTrue(variantPositionInList != -1);
         // go to simple push variant edit page
-        variantsPage.pressVariantLink(2, VARIANT_LINK.EDIT);
+        variantsPage.pressVariantLink(variantPositionInList, VARIANT_LINK.EDIT);
         // wait until page is loaded
         simplePushVariantEditPage.waitUntilPageIsLoaded();
         // edit variant
@@ -377,14 +409,51 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
                 UPDATED_SIMPLE_PUSH_VARIANT_NETWORK_URL);
         // wait until next page is loaded
         variantsPage.waitUntilPageIsLoaded();
+        variantPositionInList = variantsPage.findVariantRowByName(SIMPLE_PUSH_VARIANT_NAME);
+        assertTrue(variantPositionInList != -1);
         List<AbstractVariant> variantList = variantsPage.getVariantList();
         assertTrue(variantList != null && variantList.size() == 3);
-        assertEquals(variantList.get(2).getName(), UPDATED_SIMPLE_PUSH_VARIANT_NAME);
-        assertEquals(variantList.get(2).getDescription(), UPDATED_SIMPLE_PUSH_VARIANT_DESC);
+        assertEquals(variantList.get(variantPositionInList).getName(), UPDATED_SIMPLE_PUSH_VARIANT_NAME);
+        assertEquals(variantList.get(variantPositionInList).getDescription(), UPDATED_SIMPLE_PUSH_VARIANT_DESC);
     }
-    
+
     @Test
-    @InSequence(14)
+    @InSequence(15)
+    public void testiOSVariantProductionRegistration() {
+        // wait until page is loaded
+        variantsPage.waitUntilPageIsLoaded();
+        // assert header title
+        assertTrue(variantsPage.getHeaderTitle().contains(UPDATED_PUSH_APP_NAME));
+        // application id & master secret should exist
+        assertTrue(!isEmpty(variantsPage.getApplicationId()) && !isEmpty(variantsPage.getMasterSecret()));
+        // initially there is one variant
+        assertTrue("There should exist one variant", variantsPage.countVariants() == 3);
+        // add a new variant
+        variantsPage.addVariant();
+        // wait until page is loaded
+        variantRegistrationPage.waitUntilPageIsLoaded();
+        // register ios variant
+        variantRegistrationPage.registeriOSVariant(IOS_VARIANT_NAME_2, IOS_VARIANT_DESC, IOS_CERT_PATH, IOS_CERT_PASSPHRASE,
+                true);
+        // wait until page is loaded
+        variantsPage.waitUntilPageIsLoaded();
+        assertTrue("There should exist four variants", variantsPage.countVariants() == 4);
+        final int variantPositionInList = variantsPage.findVariantRowByName(IOS_VARIANT_NAME_2);
+        assertTrue(variantPositionInList != -1);
+        // edit the last iOS variant
+        variantsPage.pressVariantLink(variantPositionInList, VARIANT_LINK.EDIT);
+        // wait until page is loaded
+        iOSVariantEditPage.waitUntilPageIsLoaded();
+        // wait until page is loaded
+        iOSVariantEditPage.waitUntilPageIsLoaded();
+        // the variant details should be the expected ones
+        assertEquals(IOS_VARIANT_NAME_2, iOSVariantEditPage.getName());
+        assertEquals(IOS_VARIANT_DESC, iOSVariantEditPage.getDescription());
+        assertEquals(true, iOSVariantEditPage.isProd());
+    }
+
+    @Test
+    @InSequence(16)
     public void testLogout() {
         // logout
         variantsPage.logout();
@@ -421,6 +490,8 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     private static final String UPDATED_ANDROID_VARIANT_GOOGLE_KEY = "IDDASDASDSAQ__1";
 
     private static final String IOS_VARIANT_NAME = "MyIOSVariant";
+
+    private static final String IOS_VARIANT_NAME_2 = "MyIOSVariant";
 
     private static final String IOS_VARIANT_DESC = "My awesome IOS variant!";
 

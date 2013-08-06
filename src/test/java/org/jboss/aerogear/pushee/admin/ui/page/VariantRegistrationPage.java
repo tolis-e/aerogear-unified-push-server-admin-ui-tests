@@ -54,6 +54,9 @@ public class VariantRegistrationPage extends PushServerAdminUiPage {
     @FindBy(jquery = "div.rcue-dialog-inner form section:eq(1) input[type=\"password\"]")
     private WebElement APPLE_PASSPHRASE_INPUT_FIELD;
 
+    @FindBy(jquery = "div.rcue-dialog-inner form section:eq(1) input[type=\"checkbox\"]")
+    private WebElement IOS_PRODUCTION_FLAG_CHECKBOX;
+
     @FindBy(jquery = "div.rcue-dialog-inner form section:eq(2) input[type=\"text\"]")
     private WebElement SIMPLE_PUSH_NETWORK_URL;
 
@@ -64,12 +67,15 @@ public class VariantRegistrationPage extends PushServerAdminUiPage {
         submitFormXHR();
     }
 
-    public void registeriOSVariant(String name, String desc, String appleCertPath, String passphrase) {
+    public void registeriOSVariant(String name, String desc, String appleCertPath, String passphrase, boolean isProd) {
         File cert = new File(appleCertPath);
         APPLE_CERTIFICATE_INPUT_FILE.sendKeys(cert.getAbsolutePath());
         selectPlatform(PLATFORM.IOS);
         fillVariantDetails(name, desc);
         clearNfill(APPLE_PASSPHRASE_INPUT_FIELD, passphrase);
+        if ((isProd && !IOS_PRODUCTION_FLAG_CHECKBOX.isSelected()) || (!isProd && IOS_PRODUCTION_FLAG_CHECKBOX.isSelected())) {
+            IOS_PRODUCTION_FLAG_CHECKBOX.click();
+        }
         submitFormXHR();
     }
 

@@ -31,6 +31,13 @@ public class iOSVariantEditPage extends VariantEditPage {
     @FindBy(jquery = "div.rcue-dialog-inner form section input[type=\"password\"]")
     private WebElement APPLE_PASSPHRASE_INPUT_FIELD;
 
+    @FindBy(jquery = "div.rcue-dialog-inner form section input[type=\"checkbox\"]")
+    private WebElement IOS_PRODUCTION_FLAG_CHECKBOX;
+
+    public boolean isProd() {
+        return IOS_PRODUCTION_FLAG_CHECKBOX.isSelected();
+    }
+
     @Override
     public void updateVariant(String... input) {
         fillVariantDetails(input[0], input[1]);
