@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.aerogear.pushee.admin.ui.model.Installation;
-import org.jboss.arquillian.graphene.enricher.findby.ByJQuery;
 import org.jboss.arquillian.graphene.enricher.findby.FindBy;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 public class VariantDetailsPage extends PushServerAdminUiPage {
@@ -46,14 +46,14 @@ public class VariantDetailsPage extends PushServerAdminUiPage {
 
     @FindBy(jquery = "div.content div:eq(1) a:eq(0)")
     private WebElement BREADCRUMB_PUSH_APPS_LINK;
-    
+
     @FindBy(jquery = "div.content div:eq(1) a:eq(1)")
     private WebElement BREADCRUMB_VARIANTS_LINK;
 
     public void navigateToPushAppsPage() {
         guardXhr(BREADCRUMB_PUSH_APPS_LINK).click();
     }
-    
+
     public void navigateToVariantsPage() {
         guardXhr(BREADCRUMB_VARIANTS_LINK).click();
     }
@@ -73,7 +73,7 @@ public class VariantDetailsPage extends PushServerAdminUiPage {
     public List<Installation> getInstallationList() {
         final List<Installation> installationList = new ArrayList<Installation>();
         for (WebElement row : MOBILE_INSTALLATION_ROWS) {
-            final List<WebElement> tableDataList = row.findElements(ByJQuery.jquerySelector("td"));
+            final List<WebElement> tableDataList = row.findElements(By.tagName("td"));
             if (tableDataList.size() == 4) {
                 final String token = tableDataList.get(0).getText();
                 final String device = tableDataList.get(1).getText();
