@@ -25,8 +25,11 @@ import org.openqa.selenium.WebElement;
 
 public class PasswordChangePage extends PushServerAdminUiPage {
 
-    @FindBy(jquery = "#other input[type=\"password\"]")
+    @FindBy(jquery = "#other p:eq(0) input[type=\"password\"]")
     private WebElement PASSWORD_FIELD;
+
+    @FindBy(jquery = "#other p:eq(1) input[type=\"password\"]")
+    private WebElement CONFIRM_PASSWORD_FIELD;
 
     @FindBy(jquery = "#other button")
     private WebElement SUBMIT_BUTTON;
@@ -38,6 +41,7 @@ public class PasswordChangePage extends PushServerAdminUiPage {
 
     protected void fillForm(String password) {
         clearNfill(PASSWORD_FIELD, password);
+        clearNfill(CONFIRM_PASSWORD_FIELD, password);
     }
 
     @Override
