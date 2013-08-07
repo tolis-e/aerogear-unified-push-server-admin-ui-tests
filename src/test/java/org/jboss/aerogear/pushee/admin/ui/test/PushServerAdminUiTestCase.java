@@ -32,6 +32,7 @@ import org.jboss.aerogear.pushee.admin.ui.page.PasswordChangePage;
 import org.jboss.aerogear.pushee.admin.ui.page.PushAppEditPage;
 import org.jboss.aerogear.pushee.admin.ui.page.PushAppsPage;
 import org.jboss.aerogear.pushee.admin.ui.page.PushAppsPage.PUSH_APP_LINK;
+import org.jboss.aerogear.pushee.admin.ui.page.ReLoginPage;
 import org.jboss.aerogear.pushee.admin.ui.page.SimplePushVariantEditPage;
 import org.jboss.aerogear.pushee.admin.ui.page.VariantDetailsPage;
 import org.jboss.aerogear.pushee.admin.ui.page.VariantRegistrationPage;
@@ -52,6 +53,9 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
 
     @Page
     private LoginPage loginPage;
+
+    @Page
+    private ReLoginPage reLoginPage;
 
     @Page
     private PasswordChangePage passwordChangePage;
@@ -105,6 +109,8 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         passwordChangePage.waitUntilPageIsLoaded();
         // change password
         passwordChangePage.changePassword(NEW_ADMIN_PASSWORD);
+        reLoginPage.waitUntilPageIsLoaded();
+        reLoginPage.login(ADMIN_USERNAME, NEW_ADMIN_PASSWORD);
     }
 
     @Test
