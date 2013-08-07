@@ -123,7 +123,6 @@ public class PushAppsPage extends PushServerAdminUiPage {
         waitModel().until(new ExpectedCondition<Boolean>() {
             @Override
             public Boolean apply(WebDriver notUsed) {
-                System.out.println("############### " +PUSH_APPLICATION_TABLE.findElements(ByJQuery.jquerySelector("tbody tr")).size());
                 return PUSH_APPLICATION_TABLE.findElements(ByJQuery.jquerySelector("tbody tr")).size() == numOfRows;
             }
         });
