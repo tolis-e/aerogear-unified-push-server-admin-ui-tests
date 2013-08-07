@@ -1,10 +1,8 @@
 language: java
 jdk: openjdk7
-addons:
-  firefox: "22.0"
 install:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
   - cd ..
   - git clone https://github.com/aerogear/aerogear-unified-push-server.git
-script: mvn -X -f aerogear-unified-push-server-admin-ui-tests/pom.xml test
+script: mvn -f aerogear-unified-push-server-admin-ui-tests/pom.xml test
