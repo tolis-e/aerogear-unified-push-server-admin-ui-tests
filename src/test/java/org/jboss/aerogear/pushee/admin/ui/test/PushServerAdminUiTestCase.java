@@ -128,6 +128,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         pushAppEditPage.registerNewPushApp(PUSH_APP_NAME, PUSH_APP_DESC);
         // navigate to push apps page
         pushAppsPage.waitUntilPageIsLoaded();
+        pushAppsPage.waitUntilTableContainsRows(1);
         final List<PushApplication> pushAppsList = pushAppsPage.getPushAppList();
         // there should exist one push application
         assertTrue("There should exist 1 push app", pushAppsList != null && pushAppsList.size() == 1);

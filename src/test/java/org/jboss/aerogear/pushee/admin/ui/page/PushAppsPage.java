@@ -27,7 +27,9 @@ import org.jboss.aerogear.pushee.admin.ui.model.PushApplication;
 import org.jboss.arquillian.graphene.enricher.findby.ByJQuery;
 import org.jboss.arquillian.graphene.enricher.findby.FindBy;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 
 public class PushAppsPage extends PushServerAdminUiPage {
 
@@ -78,7 +80,7 @@ public class PushAppsPage extends PushServerAdminUiPage {
     private List<WebElement> filterPushApplicationRows() {
         final List<WebElement> rowList = new ArrayList<WebElement>();
         for (WebElement row : PUSH_APPLICATION_LIST) {
-            if (row.findElements(ByJQuery.jquerySelector("td")).size() == 5) {
+            if (row.findElements(By.tagName("td")).size() == 5) {
                 rowList.add(row);
             }
         }
@@ -89,12 +91,11 @@ public class PushAppsPage extends PushServerAdminUiPage {
         final List<PushApplication> pushAppList = new ArrayList<PushApplication>();
         for (WebElement row : PUSH_APPLICATION_LIST) {
             final List<WebElement> tableDataList = row.findElements(By.tagName("td"));
-            System.out.println("############################ " + tableDataList.size());
-            if (tableDataList.size() > 2) {
+            if (tableDataList.size() == 5) {
                 final String name = tableDataList.get(0).getText();
                 final String desc = tableDataList.get(1).getText();
                 final String vars = tableDataList.get(2).getText();
-                // System.out.println("name: " + name + " desc: " + desc + " vars " + vars);
+                //System.out.println("name: " + name + " desc: " + desc + " vars " + vars);
                 pushAppList.add(new PushApplication(name, desc, Integer.valueOf(vars)));
             }
         }
@@ -116,5 +117,15 @@ public class PushAppsPage extends PushServerAdminUiPage {
     @Override
     public void waitUntilPageIsLoaded() {
         waitModel().until().element(PUSH_APPLICATION_TABLE).is().visible();
+    }
+
+    public void waitUntilTableContainsRows(final int numOfRows) {
+        waitModel().until(new ExpectedCondition<Boolean>() {
+            @Override
+            public Boolean apply(WebDriver notUsed) {
+                System.out.println("############### " +PUSH_APPLICATION_TABLE.findElements(ByJQuery.jquerySelector("tbody tr")).size());
+                return PUSH_APPLICATION_TABLE.findElements(ByJQuery.jquerySelector("tbody tr")).size() == numOfRows;
+            }
+        });
     }
 }
