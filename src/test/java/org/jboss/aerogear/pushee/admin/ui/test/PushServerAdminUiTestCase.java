@@ -350,9 +350,30 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
 
     @Test
     @InSequence(12)
-    public void testiOSVariantEdit() {
+    public void testiOSVariantEditPatch() {
         variantsPage.waitUntilPageIsLoaded();
         final int variantPositionInList = variantsPage.findVariantRow(IOS_VARIANT_NAME);
+        assertTrue(variantPositionInList != -1);
+        // go to ios variant edit page
+        variantsPage.pressVariantLink(variantPositionInList, VARIANT_LINK.EDIT);
+        // wait until page is loaded
+        iOSVariantEditPage.waitUntilPageIsLoaded();
+        // edit variant
+        iOSVariantEditPage
+                .updateVariant(UPDATED_IOS_VARIANT_NAME_PATCH, UPDATED_IOS_VARIANT_DESC, null, null);
+        // wait until next page is loaded
+        variantsPage.waitUntilPageIsLoaded();
+        List<AbstractVariant> variantList = variantsPage.getVariantList();
+        assertTrue(variantList != null && variantList.size() == 2);
+        assertEquals(variantList.get(1).getName(), UPDATED_IOS_VARIANT_NAME_PATCH);
+        assertEquals(variantList.get(1).getDescription(), UPDATED_IOS_VARIANT_DESC);
+    }
+    
+    @Test
+    @InSequence(13)
+    public void testiOSVariantEdit() {
+        variantsPage.waitUntilPageIsLoaded();
+        final int variantPositionInList = variantsPage.findVariantRow(UPDATED_IOS_VARIANT_NAME_PATCH);
         assertTrue(variantPositionInList != -1);
         // go to ios variant edit page
         variantsPage.pressVariantLink(variantPositionInList, VARIANT_LINK.EDIT);
@@ -370,7 +391,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     }
 
     @Test
-    @InSequence(13)
+    @InSequence(14)
     public void testiOSVariantCancellation() {
         final int variantPositionInList = variantsPage.findVariantRow(UPDATED_IOS_VARIANT_NAME);
         assertTrue(variantPositionInList != -1);
@@ -387,7 +408,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     }
 
     @Test
-    @InSequence(14)
+    @InSequence(15)
     public void testSimplePushVariantRegistration() {
         // go to push apps page
         variantsPage.waitUntilPageIsLoaded();
@@ -410,7 +431,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     }
 
     @Test
-    @InSequence(15)
+    @InSequence(16)
     public void testSimplePushVariantDetailsPage() {
         // wait until page is loaded
         variantsPage.waitUntilPageIsLoaded();
@@ -429,7 +450,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     }
 
     @Test
-    @InSequence(16)
+    @InSequence(17)
     public void testSimplePushVariantEdit() {
         variantsPage.waitUntilPageIsLoaded();
         int variantPositionInList = variantsPage.findVariantRow(SIMPLE_PUSH_VARIANT_NAME);
@@ -452,7 +473,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     }
 
     @Test
-    @InSequence(17)
+    @InSequence(18)
     public void testiOSVariantProductionRegistration() {
         // wait until page is loaded
         variantsPage.waitUntilPageIsLoaded();
@@ -491,7 +512,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     }
 
     @Test
-    @InSequence(18)
+    @InSequence(19)
     public void registerAndroidInstallations() {
         pushAppsPage.pressPushAppLink(0, PUSH_APP_LINK.VARIANTS_PAGE);
         // wait until page is loaded
@@ -547,7 +568,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     }
 
     @Test
-    @InSequence(19)
+    @InSequence(20)
     public void registeriOSInstallations() {
         // wait until page is loaded
         variantsPage.waitUntilPageIsLoaded();
@@ -601,7 +622,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     }
 
     @Test
-    @InSequence(20)
+    @InSequence(21)
     public void registerSimplePushInstallations() {
         // wait until page is loaded
         variantsPage.waitUntilPageIsLoaded();
@@ -655,7 +676,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     }
 
     @Test
-    @InSequence(21)
+    @InSequence(22)
     public void testSecondPushAppRegistration() {
         // wait until push apps page is loaded
         pushAppsPage.waitUntilPageIsLoaded();
@@ -675,7 +696,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     }
 
     @Test
-    @InSequence(22)
+    @InSequence(23)
     public void testLogout() {
         // logout
         pushAppsPage.logout();
@@ -723,6 +744,8 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
 
     private static final String IOS_CERT_PATH = "src/test/resources/certs/qaAerogear.p12";
 
+    private static final String UPDATED_IOS_VARIANT_NAME_PATCH = "MyNewIOSVariantPatch";
+    
     private static final String UPDATED_IOS_VARIANT_NAME = "MyNewIOSVariant";
 
     private static final String UPDATED_IOS_VARIANT_DESC = "My new awesome IOS variant!";

@@ -40,9 +40,15 @@ public class iOSVariantEditPage extends VariantEditPage {
 
     @Override
     public void updateVariant(String... input) {
-        fillVariantDetails(input[0], input[1]);
-        APPLE_CERTIFICATE_INPUT_FILE.sendKeys((new File(input[2])).getAbsolutePath());
-        clearNfill(APPLE_PASSPHRASE_INPUT_FIELD, input[3]);
+        if (input[0] != null && input[1] != null) {
+            fillVariantDetails(input[0], input[1]);
+        }
+        if (input[2] != null) {
+            APPLE_CERTIFICATE_INPUT_FILE.sendKeys((new File(input[2])).getAbsolutePath());
+        }
+        if (input[3] != null) {
+            clearNfill(APPLE_PASSPHRASE_INPUT_FIELD, input[3]);
+        }
         submitForm();
     }
 
