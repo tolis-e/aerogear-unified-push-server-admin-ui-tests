@@ -23,7 +23,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.jboss.aerogear.pushee.admin.ui.model.AbstractVariant;
-import org.jboss.aerogear.pushee.admin.ui.model.AndroidVariant;
 import org.jboss.aerogear.pushee.admin.ui.model.Installation;
 import org.jboss.aerogear.pushee.admin.ui.model.PushApplication;
 import org.jboss.aerogear.pushee.admin.ui.model.VariantType;
@@ -83,6 +82,18 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
 
     @Test
     @InSequence(1)
+    public void testUnauthorizedAccess() {
+        // initialize page
+        initializePageUrl();
+        loginPage.waitUntilPageIsLoaded();
+        // navigate to push apps page
+        navigateToURL(pushAppsPage.getPageURL());
+        loginPage.waitUntilPageIsLoaded();
+        assertTrue(loginPage.getHeaderTitle() != null && loginPage.getHeaderTitle().contains(loginPage.getExpectedTitle()));
+    }
+
+    @Test
+    @InSequence(2)
     public void login() {
         // initialize page
         initializePageUrl();
@@ -97,7 +108,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     }
 
     @Test
-    @InSequence(2)
+    @InSequence(3)
     public void testPushAppRegistration() {
         // wait until push apps page is loaded
         pushAppsPage.waitUntilPageIsLoaded();
@@ -122,7 +133,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     }
 
     @Test
-    @InSequence(3)
+    @InSequence(4)
     public void testPushAppCancellation() {
         // wait until push apps page is loaded
         pushAppsPage.waitUntilPageIsLoaded();
@@ -140,7 +151,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     }
 
     @Test
-    @InSequence(4)
+    @InSequence(5)
     public void testPushAppEdit() {
         // wait until page is loaded
         pushAppsPage.waitUntilPageIsLoaded();
@@ -166,7 +177,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     }
 
     @Test
-    @InSequence(5)
+    @InSequence(6)
     public void testAndroidVariantRegistration() {
         // wait until page is loaded
         pushAppsPage.waitUntilPageIsLoaded();
@@ -211,7 +222,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     }
 
     @Test
-    @InSequence(6)
+    @InSequence(7)
     public void testAndroidVariantDetailsPage() {
         // press the variants link
         pushAppsPage.pressPushAppLink(0, PUSH_APP_LINK.VARIANTS_PAGE);
@@ -232,7 +243,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     }
 
     @Test
-    @InSequence(7)
+    @InSequence(8)
     public void testAndroidVariantEdit() {
         // wait until page is loaded
         variantsPage.waitUntilPageIsLoaded();
@@ -268,7 +279,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     }
 
     @Test
-    @InSequence(8)
+    @InSequence(9)
     public void testAndroidVariantCancellation() {
         // wait until push apps page is loaded
         androidVariantEditPage.waitUntilPageIsLoaded();
@@ -281,7 +292,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     }
 
     @Test
-    @InSequence(9)
+    @InSequence(10)
     public void testiOSVariantRegistration() {
         // go to push apps page
         variantsPage.navigateToPushAppsPage();
@@ -312,7 +323,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     }
 
     @Test
-    @InSequence(10)
+    @InSequence(11)
     public void testiOSVariantDetailsPage() {
         // wait until page is loaded
         variantsPage.waitUntilPageIsLoaded();
@@ -331,7 +342,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     }
 
     @Test
-    @InSequence(11)
+    @InSequence(12)
     public void testiOSVariantEdit() {
         variantsPage.waitUntilPageIsLoaded();
         final int variantPositionInList = variantsPage.findVariantRow(IOS_VARIANT_NAME);
@@ -352,7 +363,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     }
 
     @Test
-    @InSequence(12)
+    @InSequence(13)
     public void testiOSVariantCancellation() {
         final int variantPositionInList = variantsPage.findVariantRow(UPDATED_IOS_VARIANT_NAME);
         assertTrue(variantPositionInList != -1);
@@ -369,7 +380,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     }
 
     @Test
-    @InSequence(13)
+    @InSequence(14)
     public void testSimplePushVariantRegistration() {
         // go to push apps page
         variantsPage.waitUntilPageIsLoaded();
@@ -392,7 +403,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     }
 
     @Test
-    @InSequence(14)
+    @InSequence(15)
     public void testSimplePushVariantDetailsPage() {
         // wait until page is loaded
         variantsPage.waitUntilPageIsLoaded();
@@ -411,7 +422,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     }
 
     @Test
-    @InSequence(15)
+    @InSequence(16)
     public void testSimplePushVariantEdit() {
         variantsPage.waitUntilPageIsLoaded();
         int variantPositionInList = variantsPage.findVariantRow(SIMPLE_PUSH_VARIANT_NAME);
@@ -434,7 +445,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     }
 
     @Test
-    @InSequence(16)
+    @InSequence(17)
     public void testiOSVariantProductionRegistration() {
         // wait until page is loaded
         variantsPage.waitUntilPageIsLoaded();
@@ -473,7 +484,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     }
 
     @Test
-    @InSequence(17)
+    @InSequence(18)
     public void registerAndroidInstallations() {
         pushAppsPage.pressPushAppLink(0, PUSH_APP_LINK.VARIANTS_PAGE);
         // wait until page is loaded
@@ -527,9 +538,9 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
                 && variantDetailsPage.tokenIdExistsInList(ANDROID_INSTALLATION_TOKEN_ID_2, installationList));
         variantDetailsPage.navigateToVariantsPage();
     }
-    
+
     @Test
-    @InSequence(18)
+    @InSequence(19)
     public void registeriOSInstallations() {
         // wait until page is loaded
         variantsPage.waitUntilPageIsLoaded();
@@ -557,8 +568,8 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
                 IOS_INSTALLATION_OS, IOS_INSTALLATION_ALIAS);
         InstallationUtils.registerInstallation(contextRoot.toExternalForm(), variantId, secret, iosInstallation);
         // register second installation
-        Installation secondiOSInstallation = new Installation(IOS_INSTALLATION_TOKEN_ID_2,
-                IOS_INSTALLATION_DEVICE_TYPE, IOS_INSTALLATION_OS, IOS_INSTALLATION_ALIAS);
+        Installation secondiOSInstallation = new Installation(IOS_INSTALLATION_TOKEN_ID_2, IOS_INSTALLATION_DEVICE_TYPE,
+                IOS_INSTALLATION_OS, IOS_INSTALLATION_ALIAS);
         InstallationUtils.registerInstallation(contextRoot.toExternalForm(), variantId, secret, secondiOSInstallation);
         // go back to push app page
         variantDetailsPage.navigateToVariantsPage();
@@ -581,9 +592,9 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
                 && variantDetailsPage.tokenIdExistsInList(IOS_INSTALLATION_TOKEN_ID_2, installationList));
         variantDetailsPage.navigateToVariantsPage();
     }
-    
+
     @Test
-    @InSequence(19)
+    @InSequence(20)
     public void registerSimplePushInstallations() {
         // wait until page is loaded
         variantsPage.waitUntilPageIsLoaded();
@@ -637,7 +648,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     }
 
     @Test
-    @InSequence(20)
+    @InSequence(21)
     public void testSecondPushAppRegistration() {
         // wait until push apps page is loaded
         pushAppsPage.waitUntilPageIsLoaded();
@@ -655,9 +666,9 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         // there should exist one push application
         assertTrue("There should exist 2 push apps", pushAppsList != null && pushAppsList.size() == 2);
     }
-    
+
     @Test
-    @InSequence(21)
+    @InSequence(22)
     public void testLogout() {
         // logout
         pushAppsPage.logout();
@@ -674,7 +685,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     private static final String NEW_ADMIN_PASSWORD = "aerogear";
 
     private static final String PUSH_APP_NAME = "MyApp";
-    
+
     private static final String SECOND_PUSH_APP_NAME = "MyNewApp";
 
     private static final String PUSH_APP_DESC = "Awesome app!";
@@ -730,7 +741,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     private static final String ANDROID_INSTALLATION_OS = "ANDROID";
 
     private static final String ANDROID_INSTALLATION_ALIAS = "qa@example.com";
-    
+
     private static final String IOS_INSTALLATION_TOKEN_ID = "abcd123456";
 
     private static final String IOS_INSTALLATION_TOKEN_ID_2 = "abcd123321";
@@ -740,7 +751,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     private static final String IOS_INSTALLATION_OS = "IOS";
 
     private static final String IOS_INSTALLATION_ALIAS = "qa@example.com";
-    
+
     private static final String SIMPLE_PUSH_INSTALLATION_TOKEN_ID = "abcd123654";
 
     private static final String SIMPLE_PUSH_INSTALLATION_TOKEN_ID_2 = "abcd654321";

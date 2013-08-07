@@ -34,8 +34,21 @@ public class LoginPage extends PushServerAdminUiPage {
     @FindBy(jquery = "#login button")
     private WebElement SUBMIT_BUTTON;
 
+    @FindBy(jquery = "div.content header h1")
+    private WebElement HEADER_TITLE;
+
+    private final static String TITLE = "Login";
+
     private final static String PAGE_URL = "#/login";
-    
+
+    public String getHeaderTitle() {
+        return HEADER_TITLE.getText();
+    }
+
+    public String getExpectedTitle() {
+        return TITLE;
+    }
+
     public void login(String username, String password) {
         fillForm(username, password);
         guardXhr(SUBMIT_BUTTON).click();
