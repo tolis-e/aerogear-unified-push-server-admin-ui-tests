@@ -7,4 +7,4 @@ install:
   - sh -e /etc/init.d/xvfb start
   - cd ..
   - git clone https://github.com/aerogear/aerogear-unified-push-server.git
-script: mvn -f aerogear-unified-push-server-admin-ui-tests/pom.xml test
+script: mvn -X -f aerogear-unified-push-server-admin-ui-tests/pom.xml test
