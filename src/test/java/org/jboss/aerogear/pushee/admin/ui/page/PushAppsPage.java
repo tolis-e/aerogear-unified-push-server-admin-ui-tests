@@ -89,7 +89,8 @@ public class PushAppsPage extends PushServerAdminUiPage {
         final List<PushApplication> pushAppList = new ArrayList<PushApplication>();
         for (WebElement row : PUSH_APPLICATION_LIST) {
             final List<WebElement> tableDataList = row.findElements(By.tagName("td"));
-            if (tableDataList.size() == 5) {
+            System.out.println("############################ " + tableDataList.size());
+            if (tableDataList.size() > 2) {
                 final String name = tableDataList.get(0).getText();
                 final String desc = tableDataList.get(1).getText();
                 final String vars = tableDataList.get(2).getText();
