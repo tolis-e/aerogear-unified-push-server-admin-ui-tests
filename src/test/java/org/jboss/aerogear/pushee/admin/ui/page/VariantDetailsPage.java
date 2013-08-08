@@ -77,8 +77,9 @@ public class VariantDetailsPage extends PushServerAdminUiPage {
             if (tableDataList.size() == 4) {
                 final String token = tableDataList.get(0).getText();
                 final String device = tableDataList.get(1).getText();
-                // final String platform = tableDataList.get(2).getText();
-                installationList.add(new Installation(token, device, null, null));
+                final String platform = tableDataList.get(2).getText();
+                final String status = tableDataList.get(3).getText();
+                installationList.add(new Installation(token, device, null, null, platform, status));
             }
         }
         return installationList;

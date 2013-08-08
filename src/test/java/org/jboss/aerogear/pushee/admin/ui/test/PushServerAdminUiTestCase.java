@@ -359,8 +359,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         // wait until page is loaded
         iOSVariantEditPage.waitUntilPageIsLoaded();
         // edit variant
-        iOSVariantEditPage
-                .updateVariant(UPDATED_IOS_VARIANT_NAME_PATCH, UPDATED_IOS_VARIANT_DESC, null, null);
+        iOSVariantEditPage.updateVariant(UPDATED_IOS_VARIANT_NAME_PATCH, UPDATED_IOS_VARIANT_DESC, null, null);
         // wait until next page is loaded
         variantsPage.waitUntilPageIsLoaded();
         List<AbstractVariant> variantList = variantsPage.getVariantList();
@@ -368,7 +367,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         assertEquals(variantList.get(1).getName(), UPDATED_IOS_VARIANT_NAME_PATCH);
         assertEquals(variantList.get(1).getDescription(), UPDATED_IOS_VARIANT_DESC);
     }
-    
+
     @Test
     @InSequence(13)
     public void testiOSVariantEdit() {
@@ -537,11 +536,11 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         assertTrue(!isEmpty(variantId) && !isEmpty(secret));
         // register installation
         Installation androidInstallation = new Installation(ANDROID_INSTALLATION_TOKEN_ID, ANDROID_INSTALLATION_DEVICE_TYPE,
-                ANDROID_INSTALLATION_OS, ANDROID_INSTALLATION_ALIAS);
+                ANDROID_INSTALLATION_OS, ANDROID_INSTALLATION_ALIAS, null, null);
         InstallationUtils.registerInstallation(contextRoot.toExternalForm(), variantId, secret, androidInstallation);
         // register second installation
         Installation secondAndroidInstallation = new Installation(ANDROID_INSTALLATION_TOKEN_ID_2,
-                ANDROID_INSTALLATION_DEVICE_TYPE, ANDROID_INSTALLATION_OS, ANDROID_INSTALLATION_ALIAS);
+                ANDROID_INSTALLATION_DEVICE_TYPE, ANDROID_INSTALLATION_OS, ANDROID_INSTALLATION_ALIAS, null, null);
         InstallationUtils.registerInstallation(contextRoot.toExternalForm(), variantId, secret, secondAndroidInstallation);
         // go back to push app page
         variantDetailsPage.navigateToPushAppsPage();
@@ -564,6 +563,12 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         // the installations should have the right token ids
         assertTrue(variantDetailsPage.tokenIdExistsInList(ANDROID_INSTALLATION_TOKEN_ID, installationList)
                 && variantDetailsPage.tokenIdExistsInList(ANDROID_INSTALLATION_TOKEN_ID_2, installationList));
+        // platform should be Android
+        assertEquals(ANDROID_PLATFORM, installationList.get(0).getPlatform());
+        assertEquals(ANDROID_PLATFORM, installationList.get(1).getPlatform());
+        // status should be enabled
+        assertEquals(INSTALLATION_STATUS_ENABLED, installationList.get(0).getStatus());
+        assertEquals(INSTALLATION_STATUS_ENABLED, installationList.get(1).getStatus());
         variantDetailsPage.navigateToVariantsPage();
     }
 
@@ -593,11 +598,11 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         assertTrue(!isEmpty(variantId) && !isEmpty(secret));
         // register installation
         Installation iosInstallation = new Installation(IOS_INSTALLATION_TOKEN_ID, IOS_INSTALLATION_DEVICE_TYPE,
-                IOS_INSTALLATION_OS, IOS_INSTALLATION_ALIAS);
+                IOS_INSTALLATION_OS, IOS_INSTALLATION_ALIAS, null, null);
         InstallationUtils.registerInstallation(contextRoot.toExternalForm(), variantId, secret, iosInstallation);
         // register second installation
         Installation secondiOSInstallation = new Installation(IOS_INSTALLATION_TOKEN_ID_2, IOS_INSTALLATION_DEVICE_TYPE,
-                IOS_INSTALLATION_OS, IOS_INSTALLATION_ALIAS);
+                IOS_INSTALLATION_OS, IOS_INSTALLATION_ALIAS, null, null);
         InstallationUtils.registerInstallation(contextRoot.toExternalForm(), variantId, secret, secondiOSInstallation);
         // go back to push app page
         variantDetailsPage.navigateToVariantsPage();
@@ -618,6 +623,12 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         // the installations should have the right token ids
         assertTrue(variantDetailsPage.tokenIdExistsInList(IOS_INSTALLATION_TOKEN_ID, installationList)
                 && variantDetailsPage.tokenIdExistsInList(IOS_INSTALLATION_TOKEN_ID_2, installationList));
+        // platform should be IOS
+        assertEquals(IOS_PLATFORM, installationList.get(0).getPlatform());
+        assertEquals(IOS_PLATFORM, installationList.get(1).getPlatform());
+        // status should be enabled
+        assertEquals(INSTALLATION_STATUS_ENABLED, installationList.get(0).getStatus());
+        assertEquals(INSTALLATION_STATUS_ENABLED, installationList.get(1).getStatus());
         variantDetailsPage.navigateToVariantsPage();
     }
 
@@ -647,11 +658,11 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         assertTrue(!isEmpty(variantId) && !isEmpty(secret));
         // register installation
         Installation spInstallation = new Installation(SIMPLE_PUSH_INSTALLATION_TOKEN_ID, SIMPLE_PUSH_INSTALLATION_DEVICE_TYPE,
-                SIMPLE_PUSH_INSTALLATION_OS, SIMPLE_PUSH_INSTALLATION_ALIAS);
+                SIMPLE_PUSH_INSTALLATION_OS, SIMPLE_PUSH_INSTALLATION_ALIAS, null, null);
         InstallationUtils.registerInstallation(contextRoot.toExternalForm(), variantId, secret, spInstallation);
         // register second installation
         Installation secondSpInstallation = new Installation(SIMPLE_PUSH_INSTALLATION_TOKEN_ID_2,
-                SIMPLE_PUSH_INSTALLATION_DEVICE_TYPE, SIMPLE_PUSH_INSTALLATION_OS, SIMPLE_PUSH_INSTALLATION_ALIAS);
+                SIMPLE_PUSH_INSTALLATION_DEVICE_TYPE, SIMPLE_PUSH_INSTALLATION_OS, SIMPLE_PUSH_INSTALLATION_ALIAS, null, null);
         InstallationUtils.registerInstallation(contextRoot.toExternalForm(), variantId, secret, secondSpInstallation);
         // go back to variants page
         variantDetailsPage.navigateToVariantsPage();
@@ -672,6 +683,12 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         // the installations should have the right token ids
         assertTrue(variantDetailsPage.tokenIdExistsInList(SIMPLE_PUSH_INSTALLATION_TOKEN_ID, installationList)
                 && variantDetailsPage.tokenIdExistsInList(SIMPLE_PUSH_INSTALLATION_TOKEN_ID_2, installationList));
+        // platform should be SimplePush
+        assertEquals(SIMPLE_PUSH_PLATFORM, installationList.get(0).getPlatform());
+        assertEquals(SIMPLE_PUSH_PLATFORM, installationList.get(1).getPlatform());
+        // status should be enabled
+        assertEquals(INSTALLATION_STATUS_ENABLED, installationList.get(0).getStatus());
+        assertEquals(INSTALLATION_STATUS_ENABLED, installationList.get(1).getStatus());
         variantDetailsPage.navigateToPushAppsPage();
     }
 
@@ -745,7 +762,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     private static final String IOS_CERT_PATH = "src/test/resources/certs/qaAerogear.p12";
 
     private static final String UPDATED_IOS_VARIANT_NAME_PATCH = "MyNewIOSVariantPatch";
-    
+
     private static final String UPDATED_IOS_VARIANT_NAME = "MyNewIOSVariant";
 
     private static final String UPDATED_IOS_VARIANT_DESC = "My new awesome IOS variant!";
@@ -791,5 +808,14 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     private static final String SIMPLE_PUSH_INSTALLATION_OS = "MozillaOS";
 
     private static final String SIMPLE_PUSH_INSTALLATION_ALIAS = "qa@example.com";
+
+    private static final String IOS_PLATFORM = "IOS";
+
+    private static final String ANDROID_PLATFORM = "ANDROID";
+
+    private static final String SIMPLE_PUSH_PLATFORM = "MozillaOS";
+
+    private static final String INSTALLATION_STATUS_ENABLED = "Enabled";
+
     /* -- Testing data section -- */
 }

@@ -32,11 +32,24 @@ public class Installation {
 
     private String platform;
 
-    public Installation(String deviceToken, String deviceType, String operatingSystem, String alias) {
+    private String status;
+
+    public Installation(String deviceToken, String deviceType, String operatingSystem, String alias, String platform,
+            String status) {
         this.deviceToken = deviceToken;
         this.deviceType = deviceType;
         this.operatingSystem = operatingSystem;
         this.alias = alias;
+        this.platform = platform;
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getDeviceToken() {
