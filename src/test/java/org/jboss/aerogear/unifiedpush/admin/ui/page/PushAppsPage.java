@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.jboss.aerogear.unifiedpush.admin.ui.model.PushApplication;
-import org.jboss.arquillian.graphene.enricher.findby.ByJQuery;
 import org.jboss.arquillian.graphene.enricher.findby.FindBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -122,7 +121,8 @@ public class PushAppsPage extends PushServerAdminUiPage {
         waitModel().withTimeout(10, TimeUnit.SECONDS).until(new ExpectedCondition<Boolean>() {
             @Override
             public Boolean apply(WebDriver notUsed) {
-                return PUSH_APPLICATION_TABLE.findElements(ByJQuery.jquerySelector("tbody tr")).size() == numOfRows;
+                final List<WebElement> list = filterPushApplicationRows();
+                return list != null && list.size() == numOfRows;
             }
         });
     }
