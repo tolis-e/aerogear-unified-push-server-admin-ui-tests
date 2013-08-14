@@ -144,6 +144,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     public void testPushAppCancellation() {
         // wait until push apps page is loaded
         pushAppsPage.waitUntilPageIsLoaded();
+        pushAppsPage.waitUntilTableContainsRows(1);
         // there should exist one push application
         assertTrue("There should exist 1 push app", pushAppsPage.countPushApps() == 1);
         pushAppsPage.pressCreateButton();
@@ -153,6 +154,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         pushAppEditPage.cancel();
         // wait until page is loaded
         pushAppsPage.waitUntilPageIsLoaded();
+        pushAppsPage.waitUntilTableContainsRows(1);
         // there should exist one push application
         assertTrue("There should still exist 1 push app", pushAppsPage.countPushApps() == 1);
     }
@@ -162,6 +164,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     public void testPushAppEdit() {
         // wait until page is loaded
         pushAppsPage.waitUntilPageIsLoaded();
+        pushAppsPage.waitUntilTableContainsRows(1);
         // there should exist one push application
         assertTrue("There should still exist 1 push app", pushAppsPage.countPushApps() == 1);
         // press the edit link
@@ -175,6 +178,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         pushAppEditPage.updatePushApp(UPDATED_PUSH_APP_NAME, UPDATED_PUSH_APP_DESC);
         // wait until page is loaded
         pushAppsPage.waitUntilPageIsLoaded();
+        pushAppsPage.waitUntilTableContainsRows(1);
         final List<PushApplication> pushAppsList = pushAppsPage.getPushAppList();
         // The push app row should contain the updated info name, desc
         assertTrue(pushAppsList != null);
@@ -188,6 +192,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     public void testAndroidVariantRegistration() {
         // wait until page is loaded
         pushAppsPage.waitUntilPageIsLoaded();
+        pushAppsPage.waitUntilTableContainsRows(1);
         // there should exist one push application
         assertTrue("There should still exist 1 push app", pushAppsPage.countPushApps() == 1);
         // press the variants link
@@ -220,6 +225,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         variantsPage.navigateToPushAppsPage();
         // wait until page is loaded
         pushAppsPage.waitUntilPageIsLoaded();
+        pushAppsPage.waitUntilTableContainsRows(1);
         final List<PushApplication> pushAppsList = pushAppsPage.getPushAppList();
         // The variant counter should be updated to 1
         assertTrue(pushAppsList != null);
@@ -305,6 +311,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         variantsPage.navigateToPushAppsPage();
         // wait until page is loaded
         pushAppsPage.waitUntilPageIsLoaded();
+        pushAppsPage.waitUntilTableContainsRows(1);
         // there should exist one push application
         assertTrue("There should still exist 1 push app", pushAppsPage.countPushApps() == 1);
         // press the variants link
@@ -697,6 +704,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     public void testSecondPushAppRegistration() {
         // wait until push apps page is loaded
         pushAppsPage.waitUntilPageIsLoaded();
+        pushAppsPage.waitUntilTableContainsRows(1);
         // initially there shouldn't exist any push applications
         assertTrue("Initially there is 1 push app", pushAppsPage.countPushApps() == 1);
         // register a new push application
