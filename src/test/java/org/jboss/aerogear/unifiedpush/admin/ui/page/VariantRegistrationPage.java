@@ -17,8 +17,6 @@
 package org.jboss.aerogear.unifiedpush.admin.ui.page;
 
 import static org.jboss.aerogear.unifiedpush.admin.ui.utils.WebElementUtils.clearNfill;
-import static org.jboss.arquillian.graphene.Graphene.guardNoRequest;
-import static org.jboss.arquillian.graphene.Graphene.guardXhr;
 import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
 import java.io.File;
@@ -62,7 +60,7 @@ public class VariantRegistrationPage extends PushServerAdminUiPage {
         fillVariantDetails(name, desc);
         selectPlatform(PLATFORM.ANDROID);
         clearNfill(GOOGLE_API_KEY_INPUT_FIELD, googleApiKey);
-        submitFormNoRequest();
+        submitForm();
     }
 
     public void registeriOSVariant(String name, String desc, String appleCertPath, String passphrase, boolean isProd) {
@@ -74,33 +72,17 @@ public class VariantRegistrationPage extends PushServerAdminUiPage {
         if ((isProd && !IOS_PRODUCTION_FLAG_CHECKBOX.isSelected()) || (!isProd && IOS_PRODUCTION_FLAG_CHECKBOX.isSelected())) {
             IOS_PRODUCTION_FLAG_CHECKBOX.click();
         }
-        submitFormNoRequest();
-    }
-
-    public void registeriOSVariantXhr(String name, String desc, String appleCertPath, String passphrase, boolean isProd) {
-        File cert = new File(appleCertPath);
-        APPLE_CERTIFICATE_INPUT_FILE.sendKeys(cert.getAbsolutePath());
-        selectPlatform(PLATFORM.IOS);
-        fillVariantDetails(name, desc);
-        clearNfill(APPLE_PASSPHRASE_INPUT_FIELD, passphrase);
-        if ((isProd && !IOS_PRODUCTION_FLAG_CHECKBOX.isSelected()) || (!isProd && IOS_PRODUCTION_FLAG_CHECKBOX.isSelected())) {
-            IOS_PRODUCTION_FLAG_CHECKBOX.click();
-        }
-        submitFormXHR();
+        submitForm();
     }
 
     public void registerSimplePushVariant(String name, String desc) {
         fillVariantDetails(name, desc);
         selectPlatform(PLATFORM.SIMPLE_PUSH);
-        submitFormXHR();
+        submitForm();
     }
 
-    private void submitFormXHR() {
-        guardXhr(SUBMIT_BUTTON).click();
-    }
-
-    private void submitFormNoRequest() {
-        guardNoRequest(SUBMIT_BUTTON).click();
+    private void submitForm() {
+        SUBMIT_BUTTON.click();
     }
 
     private static enum PLATFORM {

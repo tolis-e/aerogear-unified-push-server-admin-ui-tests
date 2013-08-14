@@ -16,8 +16,6 @@
  */
 package org.jboss.aerogear.unifiedpush.admin.ui.page;
 
-import static org.jboss.arquillian.graphene.Graphene.guardNoRequest;
-import static org.jboss.arquillian.graphene.Graphene.guardXhr;
 import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
 import java.util.ArrayList;
@@ -50,15 +48,11 @@ public class VariantsPage extends PushServerAdminUiPage {
     private WebElement BACK_TO_PUSH_APPS_LINK;
 
     public void navigateToPushAppsPage() {
-        guardNoRequest(BACK_TO_PUSH_APPS_LINK).click();
-    }
-    
-    public void navigateToPushAppsPageXhr() {
-        guardXhr(BACK_TO_PUSH_APPS_LINK).click();
+        BACK_TO_PUSH_APPS_LINK.click();
     }
 
     public void addVariant() {
-        guardNoRequest(ADD_VARIANT_BUTTON).click();
+        ADD_VARIANT_BUTTON.click();
     }
 
     public String getHeaderTitle() {
@@ -85,30 +79,13 @@ public class VariantsPage extends PushServerAdminUiPage {
         final List<WebElement> anchors = VARIANTS_LIST.get(rowNum).findElements(By.tagName("a"));
         switch (link) {
             case DETAILS_PAGE:
-                guardNoRequest(anchors.get(0)).click();
+                anchors.get(0).click();
                 break;
             case EDIT:
-                guardNoRequest(anchors.get(1)).click();
+                anchors.get(1).click();
                 break;
             case REMOVE:
-                guardNoRequest(anchors.get(2)).click();
-                break;
-            default:
-                break;
-        }
-    }
-
-    public void pressVariantLinkXhr(int rowNum, VARIANT_LINK link) {
-        final List<WebElement> anchors = VARIANTS_LIST.get(rowNum).findElements(By.tagName("a"));
-        switch (link) {
-            case DETAILS_PAGE:
-                guardXhr(anchors.get(0)).click();
-                break;
-            case EDIT:
-                guardXhr(anchors.get(1)).click();
-                break;
-            case REMOVE:
-                guardXhr(anchors.get(2)).click();
+                anchors.get(2).click();
                 break;
             default:
                 break;

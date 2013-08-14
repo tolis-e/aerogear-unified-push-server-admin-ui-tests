@@ -16,25 +16,13 @@
  */
 package org.jboss.aerogear.unifiedpush.admin.ui.page;
 
-import static org.jboss.arquillian.graphene.Graphene.guardNoRequest;
-
-import org.jboss.arquillian.graphene.enricher.findby.FindBy;
-import org.openqa.selenium.WebElement;
 
 public class ReLoginPage extends LoginPage {
 
     private final static String TITLE = "Please Re-Login";
 
-    @FindBy(jquery = "#login button")
-    private WebElement SUBMIT_BUTTON;
-
     @Override
     public String getExpectedTitle() {
         return TITLE;
-    }
-
-    @Override
-    public void submitForm() {
-        guardNoRequest(SUBMIT_BUTTON).click();
     }
 }

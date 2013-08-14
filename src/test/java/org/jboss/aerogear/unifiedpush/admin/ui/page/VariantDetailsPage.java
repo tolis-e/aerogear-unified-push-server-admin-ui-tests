@@ -16,8 +16,6 @@
  */
 package org.jboss.aerogear.unifiedpush.admin.ui.page;
 
-import static org.jboss.arquillian.graphene.Graphene.guardNoRequest;
-import static org.jboss.arquillian.graphene.Graphene.guardXhr;
 import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
 import java.util.ArrayList;
@@ -52,19 +50,11 @@ public class VariantDetailsPage extends PushServerAdminUiPage {
     private WebElement BREADCRUMB_VARIANTS_LINK;
 
     public void navigateToPushAppsPage() {
-        guardNoRequest(BREADCRUMB_PUSH_APPS_LINK).click();
-    }
-    
-    public void navigateToPushAppsPageXhr() {
-        guardXhr(BREADCRUMB_PUSH_APPS_LINK).click();
+        BREADCRUMB_PUSH_APPS_LINK.click();
     }
 
     public void navigateToVariantsPage() {
-        guardNoRequest(BREADCRUMB_VARIANTS_LINK).click();
-    }
-    
-    public void navigateToVariantsPageXhr() {
-        guardXhr(BREADCRUMB_VARIANTS_LINK).click();
+        BREADCRUMB_VARIANTS_LINK.click();
     }
 
     public String getHeaderTitle() {

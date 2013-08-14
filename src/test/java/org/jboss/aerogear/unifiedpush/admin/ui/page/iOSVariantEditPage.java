@@ -17,7 +17,6 @@
 package org.jboss.aerogear.unifiedpush.admin.ui.page;
 
 import static org.jboss.aerogear.unifiedpush.admin.ui.utils.WebElementUtils.clearNfill;
-import static org.jboss.arquillian.graphene.Graphene.guardXhr;
 
 import java.io.File;
 
@@ -57,19 +56,6 @@ public class iOSVariantEditPage extends VariantEditPage {
             clearNfill(APPLE_PASSPHRASE_INPUT_FIELD, input[3]);
         }
 
-        // if (input[2] != null) {
-        // submitFormXhr();
-        // } else {
         super.submitForm();
-        // }
-    }
-
-    public void submitFormXhr() {
-        guardXhr(SUBMIT_BUTTON).click();
-    }
-
-    @Override
-    public void cancel() {
-        guardXhr(CANCEL_BUTTON).click();
     }
 }

@@ -16,8 +16,6 @@
  */
 package org.jboss.aerogear.unifiedpush.admin.ui.page;
 
-import static org.jboss.arquillian.graphene.Graphene.guardNoRequest;
-import static org.jboss.arquillian.graphene.Graphene.guardXhr;
 import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
 import java.util.ArrayList;
@@ -53,7 +51,7 @@ public class PushAppsPage extends PushServerAdminUiPage {
     }
 
     public void pressCreateButton() {
-        guardNoRequest(CREATE_BUTTON).click();
+        CREATE_BUTTON.click();
     }
 
     public static enum PUSH_APP_LINK {
@@ -64,30 +62,13 @@ public class PushAppsPage extends PushServerAdminUiPage {
         final List<WebElement> anchors = PUSH_APPLICATION_LIST.get(rowNum).findElements(By.tagName("a"));
         switch (link) {
             case VARIANTS_PAGE:
-                guardNoRequest(anchors.get(0)).click();
+                anchors.get(0).click();
                 break;
             case EDIT:
-                guardNoRequest(anchors.get(1)).click();
+                anchors.get(1).click();
                 break;
             case REMOVE:
-                guardNoRequest(anchors.get(2)).click();
-                break;
-            default:
-                break;
-        }
-    }
-
-    public void pressPushAppLinkXhr(int rowNum, PUSH_APP_LINK link) {
-        final List<WebElement> anchors = PUSH_APPLICATION_LIST.get(rowNum).findElements(By.tagName("a"));
-        switch (link) {
-            case VARIANTS_PAGE:
-                guardXhr(anchors.get(0)).click();
-                break;
-            case EDIT:
-                guardXhr(anchors.get(1)).click();
-                break;
-            case REMOVE:
-                guardXhr(anchors.get(2)).click();
+                anchors.get(2).click();
                 break;
             default:
                 break;

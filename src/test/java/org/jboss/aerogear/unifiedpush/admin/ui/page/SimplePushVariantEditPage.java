@@ -16,24 +16,12 @@
  */
 package org.jboss.aerogear.unifiedpush.admin.ui.page;
 
-import static org.jboss.arquillian.graphene.Graphene.guardXhr;
-
-import org.jboss.arquillian.graphene.enricher.findby.FindBy;
-import org.openqa.selenium.WebElement;
-
 
 public class SimplePushVariantEditPage extends VariantEditPage {
 
-    @FindBy(jquery = "div.rcue-dialog-inner form input[type=\"submit\"]")
-    private WebElement SUBMIT_BUTTON;
-    
     @Override
     public void updateVariant(String... input) {
         fillVariantDetails(input[0], input[1]);
         submitForm();
-    }
-    
-    public void submitForm() {
-        guardXhr(SUBMIT_BUTTON).click();
     }
 }
