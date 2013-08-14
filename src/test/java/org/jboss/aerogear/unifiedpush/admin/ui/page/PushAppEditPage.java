@@ -81,6 +81,7 @@ public class PushAppEditPage extends PushServerAdminUiPage {
 
     @Override
     public void waitUntilPageIsLoaded() {
+        waitModel().until(element(CANCEL_BUTTON).isVisible());
         waitModel().until(element(SUBMIT_BUTTON).isVisible());
     }
 }
