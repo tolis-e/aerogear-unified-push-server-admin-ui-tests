@@ -20,6 +20,7 @@ import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.jboss.aerogear.unifiedpush.admin.ui.model.PushApplication;
 import org.jboss.arquillian.graphene.enricher.findby.ByJQuery;
@@ -118,7 +119,7 @@ public class PushAppsPage extends PushServerAdminUiPage {
     }
 
     public void waitUntilTableContainsRows(final int numOfRows) {
-        waitModel().until(new ExpectedCondition<Boolean>() {
+        waitModel().withTimeout(10, TimeUnit.SECONDS).until(new ExpectedCondition<Boolean>() {
             @Override
             public Boolean apply(WebDriver notUsed) {
                 return PUSH_APPLICATION_TABLE.findElements(ByJQuery.jquerySelector("tbody tr")).size() == numOfRows;

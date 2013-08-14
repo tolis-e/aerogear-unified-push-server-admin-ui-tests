@@ -17,9 +17,11 @@
 package org.jboss.aerogear.unifiedpush.admin.ui.page;
 
 import static org.jboss.arquillian.graphene.Graphene.waitModel;
+import static org.jboss.arquillian.graphene.Graphene.element;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.jboss.aerogear.unifiedpush.admin.ui.model.AbstractVariant;
 import org.jboss.arquillian.graphene.enricher.findby.ByJQuery;
@@ -132,6 +134,6 @@ public class VariantsPage extends PushServerAdminUiPage {
 
     @Override
     public void waitUntilPageIsLoaded() {
-        waitModel().until().element(ADD_VARIANT_BUTTON).is().visible();
+        waitModel().withTimeout(10, TimeUnit.SECONDS).until(element(ADD_VARIANT_BUTTON).isVisible());
     }
 }

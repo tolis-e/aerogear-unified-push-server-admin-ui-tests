@@ -550,6 +550,9 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         InstallationUtils.registerInstallation(contextRoot.toExternalForm(), variantId, secret, secondAndroidInstallation);
         // go back to push app page
         variantDetailsPage.navigateToPushAppsPage();
+        
+        pushAppsPage.waitUntilPageIsLoaded();
+        pushAppsPage.waitUntilTableContainsRows(1);
         // select the push app
         pushAppsPage.pressPushAppLink(0, PUSH_APP_LINK.VARIANTS_PAGE);
         // wait until page is loaded
