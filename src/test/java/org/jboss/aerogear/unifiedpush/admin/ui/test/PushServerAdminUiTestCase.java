@@ -511,6 +511,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     @Test
     @InSequence(19)
     public void registerAndroidInstallations() {
+        pushAppsPage.waitUntilTableContainsRows(1);
         pushAppsPage.pressPushAppLink(0, PUSH_APP_LINK.VARIANTS_PAGE);
         // wait until page is loaded
         variantsPage.waitUntilPageIsLoaded();
