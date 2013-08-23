@@ -89,8 +89,11 @@ public class PushAppsPage extends PushServerAdminUiPage {
     private List<WebElement> filterPushApplicationRows() {
         final List<WebElement> rowList = new ArrayList<WebElement>();
         for (WebElement row : PUSH_APPLICATION_LIST) {
-            if (row.findElements(By.tagName("td")).size() == 5) {
-                rowList.add(row);
+            if (row != null) {
+                final List<WebElement> cols = row.findElements(By.tagName("td"));
+                if (cols != null && cols.size() == 5) {
+                    rowList.add(row);
+                }
             }
         }
         return rowList;
