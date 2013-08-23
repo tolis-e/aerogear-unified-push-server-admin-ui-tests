@@ -733,6 +733,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     @Test
     @InSequence(23)
     public void testPushAppRemoval() {
+        try{
         pushAppsPage.waitUntilPageIsLoaded();
         pushAppsPage.waitUntilTableContainsRows(2);
         final int rowIndex = pushAppsPage.findPushAppRow(SECOND_PUSH_APP_NAME);
@@ -741,11 +742,15 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         // force accept all the confirm boxes
         confirmationBoxPage.acceptConfirmBoxes();
         pushAppsPage.pressPushAppLink(rowIndex, PUSH_APP_LINK.REMOVE);
+        System.out.println("#### after press");
         pushAppsPage.waitUntilPageIsLoaded();
         pushAppsPage.waitUntilTableContainsRows(1);
+        System.out.println("#### after rows");
         // the deleted push app should not exist
         final List<PushApplication> pushAppsList = pushAppsPage.getPushAppList();
-        assertFalse(pushAppsPage.pushApplicationExists(SECOND_PUSH_APP_NAME, PUSH_APP_DESC, pushAppsList));
+        assertFalse(pushAppsPage.pushApplicationExists(SECOND_PUSH_APP_NAME, PUSH_APP_DESC, pushAppsList)); }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
