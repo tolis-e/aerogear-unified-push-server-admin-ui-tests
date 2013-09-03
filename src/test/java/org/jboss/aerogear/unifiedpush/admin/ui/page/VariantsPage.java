@@ -126,11 +126,15 @@ public class VariantsPage extends PushServerAdminUiPage {
     }
 
     private List<WebElement> filterVariantRows() {
+        try {
+            // workaround for travis headless browser testing
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            //e.printStackTrace();
+        }
         final List<WebElement> rowList = new ArrayList<WebElement>();
         if (VARIANTS_LIST != null && VARIANTS_LIST.size() > 0) {
-            final List<WebElement> copy = new ArrayList<WebElement>();
-            copy.addAll(VARIANTS_LIST);
-            for (WebElement row : copy) {
+            for (WebElement row : VARIANTS_LIST) {
                 if (row != null) {
                     final List<WebElement> tableDataList = row.findElements(By.tagName("td"));
                     if (tableDataList != null && tableDataList.size() == 6) {
