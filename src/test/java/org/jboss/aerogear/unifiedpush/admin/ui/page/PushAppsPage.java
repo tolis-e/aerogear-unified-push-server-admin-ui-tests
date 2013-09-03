@@ -87,11 +87,14 @@ public class PushAppsPage extends PushServerAdminUiPage {
     }
 
     private List<WebElement> filterPushApplicationRows() {
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            //e.printStackTrace();
+        }
         final List<WebElement> rowList = new ArrayList<WebElement>();
         if (PUSH_APPLICATION_LIST != null && PUSH_APPLICATION_LIST.size() > 0) {
-            final List<WebElement> copy = new ArrayList<WebElement>();
-            copy.addAll(PUSH_APPLICATION_LIST);
-            for (WebElement row : copy) {
+            for (WebElement row : PUSH_APPLICATION_LIST) {
                 if (row != null) {
                     final List<WebElement> cols = row.findElements(By.tagName("td"));
                     if (cols != null && cols.size() == 5) {
@@ -106,9 +109,7 @@ public class PushAppsPage extends PushServerAdminUiPage {
     public List<PushApplication> getPushAppList() {
         final List<PushApplication> pushAppList = new ArrayList<PushApplication>();
         if (PUSH_APPLICATION_LIST != null && PUSH_APPLICATION_LIST.size() > 0) {
-            final List<WebElement> copy = new ArrayList<WebElement>();
-            copy.addAll(PUSH_APPLICATION_LIST);
-            for (WebElement row : copy) {
+            for (WebElement row : PUSH_APPLICATION_LIST) {
                 if (row != null) {
                     final List<WebElement> tableDataList = row.findElements(By.tagName("td"));
                     if (tableDataList != null && tableDataList.size() == 5) {
