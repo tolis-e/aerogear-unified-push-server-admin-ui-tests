@@ -200,15 +200,6 @@
     <dependencyManagement>
         <dependencies>
 
-            <!-- This POM serves as BOM (Bill of Materials) for managing core Selenium dependency versions. -->
-            <dependency>
-                <groupId>org.jboss.arquillian.selenium</groupId>
-                <artifactId>selenium-bom</artifactId>
-                <version>${version.selenium}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
             <!-- Starting point for integration Graphene test suites. -->
             <dependency>
                 <groupId>org.jboss.arquillian.graphene</groupId>
